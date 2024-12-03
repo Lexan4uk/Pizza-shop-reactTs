@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 //import { simpleGet, apiTags } from "@apiAl/simpleGet"
 import { simpleGet, apiTags } from '../../src/api/simpleGet';
 //import { IgoodsQuerry as Igoods2 } from '@types/pages/MSimpleGet'; 
-import { IGoodsQuery, IGoods, IOptionsQuery, IOption, IPromotionsQuery, IPromotion, ISortedGoods, IParentGroup } from '../../src/types/pages/MSimpleGet';
+import { IGoodsQuery, IGoods, IOptionsQuery, IOption, IPromotionsQuery, IPromotion, ISortedGoods, IParentGroup, СPromotion } from '../../src/types/pages/MSimpleGet';
 
 
 
@@ -24,16 +24,14 @@ function Main() {
 
   const { data: options, error: opError, isLoading: opIsLoading } = useSWR<IOptionsQuery>(apiTags.menu_categories(), simpleGet);
   const { data: goods, error: gError, isLoading: gIsLoading } = useSWR<IGoodsQuery>(apiTags.menu(), simpleGet);
-  const { data: promotions, error: pError, isLoading: pIsLoading } = useSWR<IPromotionsQuery>(apiTags.promotions, simpleGet);
+  const { data: promotionsRaw, error: pError, isLoading: pIsLoading } = useSWR<IPromotionsQuery>(apiTags.promotions, simpleGet);
   let normalizedPromos: IPromotion[] = []
-  if (promotions?.items) {
-    normalizedPromos = promotions.items.map((item: IPromotion) => {
-      return objectNormalizer(item, "actions");
-    });
+  if (promotionsRaw?.items) {
+    normalizedPromos = promotionsRaw?.items?.map(item => new СPromotion(item)) || [];
   }
+  
   let sortedGoods: ISortedGoods[] = [];
   if (goods?.items) {
-    console.log(goods)
     sortedGoods = goods.items.reduce((acc: ISortedGoods[], item) => {
       objectNormalizer(item, "product")
       const parentGroupId = item.parent_group.id;
@@ -107,8 +105,8 @@ function Main() {
             className="main-catalog__promotion promotion-swiper"
             loop={true}
           >
-            {normalizedPromos?.map((item : IPromotion) => (
-              <SwiperSlide key={item.id} className="main-catalog__promotion-slide"> 
+            {normalizedPromos?.map((item: IPromotion) => (
+              <SwiperSlide key={item.id} className="main-catalog__promotion-slide">
                 <Link to={`/${item.href}`} >
                   <img className="main-catalog__promotion-slide-img" src={`https://nf.kvokka.net${item.cover}`} alt="" />
                 </Link>

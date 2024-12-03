@@ -12,12 +12,11 @@ export const apiTags = {
     deliver_points: "delivery/delivery_point/get"
 };
 
-const getCityId = (): string => {
+const getCityId = (): string | undefined => {
     const city = localStorage.getItem("city");
-    if (!city) {
-        throw new Error("City ID not found in localStorage");
+    if (city) {
+        return JSON.parse(city).cityId;
     }
-    return JSON.parse(city).cityId;
 }
 
 export async function simpleGet(url: string | null | keyof typeof apiTags): Promise<any> {

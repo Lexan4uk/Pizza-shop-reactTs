@@ -61,6 +61,28 @@ export interface IPromotion {
     short_description: string;
     start_date: string;
     end_date: string;
-    href: string
+    href: string;
 }
+export class СPromotion implements IPromotion {
+    id: number;
+    title: string;
+    cover: string;
+    description: string;
+    short_description: string;
+    start_date: string;
+    end_date: string;
+    href: string;
+
+    constructor(data: Partial<IPromotion>) {
+        this.id = data.id ?? 0;
+        this.title = data.title ?? '';
+        this.cover = data.cover ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOwRConBYl2t6L8QMOAQqa5FDmPB_bg7EnGA&s';
+        this.description = data.description ?? '';
+        this.short_description = data.short_description ?? '';
+        this.start_date = data.start_date ?? '';
+        this.end_date = data.end_date ?? '';
+        this.href = data.href ?? `actions/${String(data.id)}`;
+    }
+}
+
 
