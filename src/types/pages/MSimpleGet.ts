@@ -1,11 +1,12 @@
 export interface IGoodsQuery {
     code: number;
     count: number;
-    items: IGoods[];
+    items: IGood[];
 }
-export interface IGoods {
+export interface IGood {
     code: string;
     description: string;
+    href: string;
     id: string;
     image_links: string[];
     is_supported: boolean;
@@ -13,7 +14,36 @@ export interface IGoods {
     min_price: number;
     name: string;
     parent_group: IParentGroup;
+    tags: string[];
 }
+export class CGood implements IGood {
+    code: string;
+    description: string;
+    href: string;
+    id: string;
+    image_links: string[];
+    is_supported: boolean;
+    menu_category: boolean;
+    min_price: number;
+    name: string;
+    parent_group: IParentGroup;
+    tags: string[];
+
+    constructor(data: Partial<IGood>) {
+        this.code = data.code ?? '';
+        this.description = data.description ?? '';
+        this.href = data.href ?? `product/${data.id}`
+        this.id = data.id ?? "";
+        this.image_links = data.image_links ?? [];
+        this.is_supported = data.is_supported ?? false;
+        this.menu_category = data.menu_category ?? false;
+        this.min_price = data.min_price ?? 0;
+        this.name = data.name ?? '';
+        this.parent_group = data.parent_group ? new CParentGroup(data.parent_group) : new CParentGroup({});
+        this.tags = data.tags ?? [];
+    }
+}
+
 
 export interface IParentGroup {
     id: string;
@@ -24,11 +54,30 @@ export interface IParentGroup {
     tags: string[];
     image_links: string[];
 }
+export class CParentGroup implements IParentGroup {
+    id: string;
+    code: string;
+    name: string;
+    menu_category: boolean;
+    color: string;
+    tags: string[];
+    image_links: string[];
+
+    constructor(data: Partial<IParentGroup>) {
+        this.id = data.id ?? "";
+        this.code = data.code ?? "";
+        this.name = data.name ?? "";
+        this.menu_category = data.menu_category ?? false;
+        this.color = data.color ?? "defaultColor";
+        this.tags = data.tags ?? [];
+        this.image_links = data.image_links ?? []
+    }
+}
 export interface ISortedGoods {
     parent_group_id: string,
     name: string,
     color: string,
-    items: IGoods[]
+    items: IGood[]
 }
 
 
@@ -63,7 +112,7 @@ export interface IPromotion {
     end_date: string;
     href: string;
 }
-export class СPromotion implements IPromotion {
+export class CPromotion implements IPromotion {
     id: number;
     title: string;
     cover: string;
@@ -81,7 +130,7 @@ export class СPromotion implements IPromotion {
         this.short_description = data.short_description ?? '';
         this.start_date = data.start_date ?? '';
         this.end_date = data.end_date ?? '';
-        this.href = data.href ?? `actions/${String(data.id)}`;
+        this.href = data.href ?? `actions/${data.id}`;
     }
 }
 

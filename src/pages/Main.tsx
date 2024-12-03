@@ -16,7 +16,10 @@ import { Link } from "react-router-dom";
 //import { simpleGet, apiTags } from "@apiAl/simpleGet"
 import { simpleGet, apiTags } from '../../src/api/simpleGet';
 //import { IgoodsQuerry as Igoods2 } from '@types/pages/MSimpleGet'; 
-import { IGoodsQuery, IGoods, IOptionsQuery, IOption, IPromotionsQuery, IPromotion, ISortedGoods, IParentGroup, СPromotion } from '../../src/types/pages/MSimpleGet';
+import {
+  IGoodsQuery, IOptionsQuery, IOption, IPromotionsQuery, IPromotion, ISortedGoods, IParentGroup,
+  CParentGroup, CPromotion, CGood
+} from '../../src/types/pages/MSimpleGet';
 
 
 
@@ -27,16 +30,17 @@ function Main() {
   const { data: promotionsRaw, error: pError, isLoading: pIsLoading } = useSWR<IPromotionsQuery>(apiTags.promotions, simpleGet);
   let normalizedPromos: IPromotion[] = []
   if (promotionsRaw?.items) {
-    normalizedPromos = promotionsRaw?.items?.map(item => new СPromotion(item)) || [];
+    normalizedPromos = promotionsRaw?.items?.map(item => new CPromotion(item)) || [];
   }
-  
+
   let sortedGoods: ISortedGoods[] = [];
-  if (goods?.items) {
+  /*if (goods?.items) {
+    console.log(goods)
     sortedGoods = goods.items.reduce((acc: ISortedGoods[], item) => {
       objectNormalizer(item, "product")
       const parentGroupId = item.parent_group.id;
       const groupName = item.parent_group.name;
-      const groupColor = item.parent_group.color || 'defaultColor';
+      const groupColor = item.parent_group.color;
       let group = acc.find(group => group.parent_group_id === parentGroupId);
       if (!group) {
         group = {
@@ -48,6 +52,28 @@ function Main() {
         acc.push(group);
       }
       group.items.push(item);
+      return acc;
+    }, []);
+  }*/
+  if (goods?.items) {
+    console.log(goods)
+    sortedGoods = goods.items.reduce((acc: ISortedGoods[], item) => {
+      const good = new CGood(item);
+      const parentGroupId = good.parent_group.id;
+      const groupName = good.parent_group.name;
+      const groupColor = good.parent_group.color;
+      let group = acc.find(group => group.parent_group_id === parentGroupId);
+
+      if (!group) {
+        group = {
+          parent_group_id: parentGroupId,
+          name: groupName,
+          color: groupColor,
+          items: []
+        };
+        acc.push(group);
+      }
+      group.items.push(good);
       return acc;
     }, []);
   }
