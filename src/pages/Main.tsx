@@ -25,7 +25,7 @@ function Main() {
   const { data: options, error: opError, isLoading: opIsLoading } = useSWR<IOptionsQuery>(apiTags.menu_categories(), simpleGet);
   const { data: goods, error: gError, isLoading: gIsLoading } = useSWR<IGoodsQuery>(apiTags.menu(), simpleGet);
   const { data: promotions, error: pError, isLoading: pIsLoading } = useSWR<IPromotionsQuery>(apiTags.promotions, simpleGet);
-  let normalizedPromos
+  let normalizedPromos: IPromotion[] = []
   if (promotions?.items) {
     normalizedPromos = promotions.items.map((item: IPromotion) => {
       return objectNormalizer(item, "actions");
@@ -107,7 +107,7 @@ function Main() {
             className="main-catalog__promotion promotion-swiper"
             loop={true}
           >
-            {normalizedPromos?.map((item) => (
+            {normalizedPromos?.map((item : IPromotion) => (
               <SwiperSlide key={item.id} className="main-catalog__promotion-slide"> 
                 <Link to={`/${item.href}`} >
                   <img className="main-catalog__promotion-slide-img" src={`https://nf.kvokka.net${item.cover}`} alt="" />

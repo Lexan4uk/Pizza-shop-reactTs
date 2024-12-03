@@ -61,5 +61,6 @@ export interface IPromotion {
     short_description: string;
     start_date: string;
     end_date: string;
+    href: string
 }
 
