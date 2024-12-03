@@ -1,0 +1,86 @@
+.menu-card {
+    &_props {
+        width: 100%;
+        position: relative;
+        min-height: 216px;
+        justify-content: space-between;
+    }
+
+    &__border {
+        position: absolute;
+    }
+
+    &__border-circle {
+        position: absolute;
+        right: 0;
+        margin-top: 45px;
+    }
+
+    &__content-holder {
+        display: grid;
+        grid-template-columns: 132px auto;
+        gap: 12px;
+        align-items: center;
+        z-index: 1;
+        padding: 18px 18px 0px 12px;
+    }
+
+    &__content {
+        display: grid;
+    }
+
+    &__img-holder {
+        position: relative;
+        margin-bottom: auto;
+    }
+
+    &__img {
+        height: 100%;
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    &__tag {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    &__content-text {
+        color: var(--gray-text-active);
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    &__buttons-holder {
+        margin-left: auto;
+        margin-top: 5px;
+        width: 248px;
+    }
+
+    &__button-choose {
+        --button-color: var(--iconcolor);
+        color: var(--white) !important;
+        height: auto !important;
+        flex: 1;
+        position: relative;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 1px;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        &_text-right {
+            margin: 0 auto;
+        }
+    }
+}

@@ -1,0 +1,51 @@
+.action {
+    .header__holder {
+        position: fixed;
+        background: var(--black);
+        width: 360px;
+        z-index: 3;
+    }
+    &__header-arrow {
+        position: absolute;
+        left: 0;
+        margin-left: 16px;
+        transform: translateY(-10%);
+        --iconcolor: var(--white)
+    }
+    &__header-title {
+        margin: 0 auto !important;
+    }
+
+
+    &__holder {
+        padding-top: 72px;
+        padding-bottom: 100px;
+        gap: 24px;
+        min-height: 100vh;
+    }
+    &__image-holder {
+        height: 328px;
+        width: 328px;
+    }
+    &__image {
+        height: 100%;
+        width: 100%;
+        clip-path: polygon(18px 0, 100% 0, 100% 100%, 0 100%, 0 17px);
+    }
+    &__text {
+        white-space: pre-line;
+    }
+
+
+
+
+
+    &__footer-content {
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+    &__footer-btn {
+        width: 100%;
+        text-align: center;
+    }
+}

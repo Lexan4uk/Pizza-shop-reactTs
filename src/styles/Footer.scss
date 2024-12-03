@@ -1,0 +1,52 @@
+.footer {
+    &_props {
+        z-index: 5;
+        background: inherit;
+        border-top: 1px solid var(--dark-gray);
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        max-width: 360px;
+        width: 100%;
+    }
+
+    &__nav {
+        padding: 12px 8px 16px 8px;
+    }
+
+    &__holder {
+
+        justify-content: space-between;
+    }
+    &__auth-btn {
+        display: block;
+        text-align: center;
+        width: 100% !important;
+        
+        &_inactive {
+            background: var(--gray-text-inactive) !important;
+            color: var(--white) !important;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+    }
+    &__link {
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        width: 64px;
+
+        &_active {
+            --iconcolor: var(--yellow) !important;
+
+            .text-menu {
+                color: var(--yellow);
+            }
+        }
+    }
+
+    &__link-text {
+        color: var(--gray-text-inactive)
+    }
+    
+}

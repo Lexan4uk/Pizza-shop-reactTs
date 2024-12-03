@@ -1,0 +1,30 @@
+.editprofile {
+    .header__holder {
+        background: var(--black);
+        width: 360px;
+        z-index: 3;
+    }
+    &__header-arrow {
+        position: absolute;
+        left: 0;
+        margin-left: 16px;
+        transform: translateY(-10%);
+        --iconcolor: var(--white)
+    }
+    &__header-title {
+        margin: 0 auto !important;
+    }
+
+
+    &__content-holder {
+        padding-top: 16px;
+        padding-bottom: 80px;
+    }
+    &__form {
+        width: 100%;
+    }
+
+    &__result {
+        margin: auto;
+    }
+}

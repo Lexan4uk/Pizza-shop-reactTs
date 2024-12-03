@@ -1,0 +1,39 @@
+.promo-card {
+    --iconcolor: var(--yellow) !important;
+
+    &_props {
+        width: 158px;
+        height: 254px;
+        position: relative;
+    }
+
+    &__image-holder {
+        height: 156px;
+        width: 156px;
+        align-self: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        clip-path: polygon(18px 0, 100% 0, 100% 100%, 0 100%, 0 17px);
+
+    }
+
+    &__border {
+        position: absolute;
+        z-index: 1;
+    }
+    &__border-circle {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: 1;
+        transform: translate(10%, 40%);
+    }
+    &__content {
+        margin  : 16px 12px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}

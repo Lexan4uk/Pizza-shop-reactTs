@@ -1,0 +1,18 @@
+.addresses {
+    .header__holder {
+        position: fixed;
+        background: var(--black);
+        width: 360px;
+        z-index: 3;
+    }
+    &__header-arrow {
+        position: absolute;
+        left: 0;
+        margin-left: 16px;
+        transform: translateY(-10%);
+        --iconcolor: var(--white)
+    }
+    &__header-title {
+        margin: 0 auto !important;
+    }
+}

@@ -1,0 +1,90 @@
+.main-catalog {
+  &_props {
+    min-height: 1000px;
+    padding-top: 16px;
+    padding-bottom: 92px;
+  }
+
+  &__delivery-holder {
+  }
+
+  &__delivery-option {
+    color: var(--gray-text-inactive);
+    border: 1px solid var(--dark-gray);
+    background: none;
+    flex: 1;
+    padding: 6px 20px;
+
+    &_active {
+      color: var(--yellow);
+      border: 1px solid var(--yellow);
+    }
+  }
+
+  &__add-adress {
+    text-decoration: underline;
+    margin: 16px auto 0 auto;
+  }
+  &__promotion-holder {
+    margin-top: 30px;
+    &_margin-bottom {
+      margin-bottom: 58px !important;
+    }
+  }
+  &__promotion {
+    padding-left: 10px !important;
+    margin-left: 6px !important;
+    padding-right: 16px !important;
+    height: 160px !important;
+    overflow: hidden !important;
+  }
+  &__promotion-slide {
+    width: fit-content !important;
+  }
+  &__promotion-slide-img {
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+  }
+
+  &__goods-nav-wrapper {
+    &_fixed {
+      padding: 12px 8px;
+      gap: 5px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 360px;
+      z-index: 5;
+      background: var(--black);
+      border-bottom: 1px solid var(--dark-gray);
+      align-items: center;
+    }
+  }
+
+  &__goods-nav-holder {
+    margin-top: 40px;
+    padding-left: 16px;
+    padding-right: 16px;
+    overflow: hidden;
+
+    .swiper-slide {
+      width: fit-content !important;
+    }
+
+    &_fixed {
+      margin: 0 !important;
+    }
+
+  }
+
+  &__section {
+    gap: 24px;
+  }
+
+  &__section-top {
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 60px;
+  }
+}

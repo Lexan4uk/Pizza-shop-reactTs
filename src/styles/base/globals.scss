@@ -1,0 +1,181 @@
+@import 'mixins';
+@import 'variables';
+
+* {
+  color: var(--white);
+  font-family: "Bender";
+}
+
+#root {
+  background: var(--black);
+  position: relative;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  max-width: 360px;
+  min-height: 100vh;
+}
+main {
+  min-height: 100vh;
+  background: var(--black);
+}
+
+.block-normalizer {
+  width: 100%;
+  display: flex;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin: 0 auto;
+}
+
+.title-l {
+  font-family: 'Bender';
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 32px;
+  text-transform: uppercase;
+}
+
+.title-m {
+  font-family: 'Bender';
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 28px;
+  text-transform: uppercase;
+
+}
+
+.title-s {
+  font-family: 'Bender';
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  text-transform: uppercase;
+
+}
+.title-xs {
+  font-family: 'Bender';
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  text-transform: uppercase;
+
+}
+
+.text-l {
+  font-family: 'Brutal Type';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.text-m {
+  font-family: 'Brutal Type';
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+}
+.text-s {
+  font-family: 'Brutal Type';
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-menu {
+  font-family: 'Brutal Type';
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.hlink-s {
+  font-family: 'Brutal Type';
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+}
+.hlink-l {
+  font-family: 'Brutal Type';
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+}
+.simple-button {
+  background: none;
+  padding: 0;
+  border: none;
+}
+
+.button-text {
+  font-family: 'Bender';
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.button {
+  @extend .button-text;
+  border: none;
+  height: fit-content;
+  background: var(--button-color);
+  color: var(--black);
+  transition: all 0.3s;
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.button-l {
+  @extend .button;
+  padding-top: 10px;
+  padding-bottom: 11px;
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+
+  /* Обрезка углов */
+  &_uncative {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+}
+.text-yellow {
+  color: var(--button-color)
+}
+.text-red {
+  color: var(--red)
+}
+.text-black {
+  color: var(--black)
+}
+
+
+.button-s {
+  @extend .button;
+  padding: 5px 14px;
+
+  &_slice-right {
+    background: linear-gradient(350grad, transparent 10px, var(--button-color) 0) ;
+  }
+  &_slice-left {
+    background: linear-gradient(50grad, transparent 10px, var(--button-color) 0) ;
+  }
+}
+
+.f-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.f-row {
+  display: flex;
+}
+.gap-16 {
+  gap: 16px;
+}
+.gap-4 {
+  gap: 4px;
+}
+.bg-yellow {
+  background: var(--yellow);
+}

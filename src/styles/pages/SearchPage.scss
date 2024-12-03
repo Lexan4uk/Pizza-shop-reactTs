@@ -1,0 +1,33 @@
+.search-page {
+    &__form {
+        padding-top: 16px;
+    }
+    &__search {
+        appearance: none;
+        background: none;
+        width: 250px;
+        &:focus {
+            outline: none;
+        }
+    }
+    &__search-icon {
+        right: 0;
+    }
+    &__options-holder {
+        margin-top: 16px;
+        margin-left: 40px;
+    }
+    &__option {
+        width: 100%;
+        text-align: left;
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+        border-bottom: 1px solid var(--dark-gray) !important;
+        &_selected {
+            color: var(--yellow);
+        }
+        &:last-child {
+            border-bottom: none !important;
+        }
+    }
+}

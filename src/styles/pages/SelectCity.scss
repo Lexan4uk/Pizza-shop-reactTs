@@ -1,0 +1,32 @@
+.select-city {
+    &__header {
+        justify-content: flex-end;
+        --iconcolor: var(--white);
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+    &__article {
+        margin-bottom: 24px;
+    }
+    &__search {
+        appearance: none;
+        background: none;
+        width: 250px;
+        &:focus {
+            outline: none;
+        }
+    }
+    &__search-icon {
+        right: 0;
+    }
+    &__options-holder {
+        margin-top: 16px;
+        gap: 16px;
+    }
+    &__option {
+        width: fit-content;
+        &_selected {
+            color: var(--yellow);
+        }
+    }
+}
