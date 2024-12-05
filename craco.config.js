@@ -13,7 +13,7 @@ module.exports = {
             '@pages': resolvePath('./src/pages'),
             '@globalStyles': resolvePath('./src/styles/base/'),
             '@scripts': resolvePath('./src/scripts'),
-            '@types': resolvePath('./src/types'),
+            '@myModels': resolvePath('./src/myModels')
         }
     },
     

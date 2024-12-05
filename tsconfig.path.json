@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@api/*": ["./src/api/*"],
+            "@images/*": ["./src/images/*"],
+            "@styles/*": ["./src/styles/*"],
+            "@fonts/*": ["./src/styles/fonts/*"],
+            "@components/*": ["./src/components/*"],
+            "@pages/*": ["./src/pages/*"],
+            "@globalStyles/*": ["./src/styles/base/*"],
+            "@scripts/*": ["./src/scripts/*"],
+            "@myModels/*": ["./src/myModels/*"]
+        },
+        "noUncheckedIndexedAccess": true,
+        "noImplicitReturns": true,
+    }
+}

@@ -73,13 +73,6 @@ export class CParentGroup implements IParentGroup {
         this.image_links = data.image_links ?? []
     }
 }
-export interface ISortedGoods {
-    parent_group_id: string,
-    name: string,
-    color: string,
-    items: IGood[]
-}
-
 
 export interface IOptionsQuery {
     code: number;
@@ -134,4 +127,10 @@ export class CPromotion implements IPromotion {
     }
 }
 
+export interface IGroupedOption {
+    id: string;
+    name: string;
+    color: string;
+    items: IGood[];
+  }
 

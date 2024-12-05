@@ -1,35 +1,6 @@
 {
+    "extends": "./tsconfig.path.json",
     "compilerOptions": {
-        "baseUrl": "src",
-        "paths": {
-            "@images/*": [
-                "images/*"
-            ],
-            "@styles/*": [
-                "styles/*"
-            ],
-            "@fonts/*": [
-                "fonts/*"
-            ],
-            "@components/*": [
-                "components/*"
-            ],
-            "@pages/*": [
-                "pages/*"
-            ],
-            "@globalStyles/*": [
-                "globalStyles/*"
-            ],
-            "@scripts/*": [
-                "scripts/*"
-            ],
-            "@apiAl/*": [
-                "api/*"
-            ],
-            "@types/*": [
-                "types/*"
-            ]
-        },
         "target": "ES6",
         "lib": [
             "DOM",

@@ -1,21 +1,23 @@
-//import { api } from "@api/api";
-import { api } from '../../src/api/api';
+import { api } from "@api/api";
 
 
 export const apiTags = {
     menu_categories: () => `menu_categories?city=${getCityId()}`,
     menu: () => `products/menu?city=${getCityId()}`,
     promotions: "promotion",
-    promotionById: (id: number) => `promotion/${id}`,
-    productById: (id: number) => `products/menu/${id}`,
+    promotionById: (id: string | undefined) => `promotion/${id}`,
+    productById: (id: string | undefined) => `products/menu/${id}?city=${getCityId()}`,
     city: "delivery/city/filter_city",
     deliver_points: "delivery/delivery_point/get"
 };
 
-const getCityId = (): string | undefined => {
+const getCityId = (): string => {
     const city = localStorage.getItem("city");
     if (city) {
         return JSON.parse(city).cityId;
+    }
+    else {
+        return "Город не определён"
     }
 }
 

@@ -1,8 +1,17 @@
 import '@styles/pages/Product.scss';
 import { useEffect, useMemo } from 'react';
-
-const SizesCard = ({ data, selectedThickness, setSelectedIdBySize, selectedIdBySize, setCurrentPrice }) => {
-    const options = useMemo(() => data.reduce((acc, sortItem) => {
+import {
+    IProduct, IProductModifier, IModifier, IProductQuery, INormalizedProduct, INormalizedProductQuery,
+    CNormalizedProduct
+  } from '@myModels/pages/MProduct';
+import { 
+    ISizesCard, IOptions,
+    COptions
+ } from '@myModels/components/cards/MSizesCard'
+  
+const SizesCard = ({ data , selectedThickness, setSelectedIdBySize, selectedIdBySize, setCurrentPrice } : ISizesCard) => {
+    console.log(data)
+    const options = useMemo(() => data.reduce((acc: { [key: string]: IOptions[] }, sortItem: INormalizedProduct) => {
         const { thickness, size, id, min_price } = sortItem;
 
         if (!acc[thickness]) {
@@ -10,14 +19,16 @@ const SizesCard = ({ data, selectedThickness, setSelectedIdBySize, selectedIdByS
         }
 
         if (!acc[thickness].some(item => item.size === size)) {
-            acc[thickness].push({ size, id, min_price });
+            acc[thickness].push({ thickness, size, id, min_price });
         }
 
         return acc;
-    }, {}), []);
-
-    const availableSizes = options[selectedThickness] || [];
+    }, {}), [data]);
+    let availableSizes: IOptions[] = [new COptions({})]
+    console.log(availableSizes[0])
+    availableSizes = options[selectedThickness] || [new COptions({})]
     useEffect(() => {
+        console.log(options)
         setSelectedIdBySize(availableSizes[0].id);
         setCurrentPrice(availableSizes[0].min_price)
         console.log(selectedIdBySize)

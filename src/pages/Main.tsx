@@ -3,24 +3,19 @@ import Header from '@components/Header';
 import Footer from '@components/Footer';
 import MainCard from '@components/cards/MainCard'
 import useSWR from 'swr';
-import objectNormalizer from '@scripts/helpers/objectNormalizer';
 
 import { useState, useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import getSvg from '@images/svg'
 import { Link } from "react-router-dom";
-//import { simpleGet, apiTags } from "@apiAl/simpleGet"
-import { simpleGet, apiTags } from '../../src/api/simpleGet';
-//import { IgoodsQuerry as Igoods2 } from '@types/pages/MSimpleGet'; 
+import { simpleGet, apiTags } from "@api/simpleGet"
 import {
-  IGoodsQuery, IOptionsQuery, IOption, IPromotionsQuery, IPromotion, ISortedGoods, IParentGroup,
-  CParentGroup, CPromotion, CGood
-} from '../../src/types/pages/MSimpleGet';
-
+  IGoodsQuery, IOptionsQuery, IPromotionsQuery, IPromotion, IGroupedOption,
+  CPromotion, CGood
+} from '@myModels/pages/MMain';
 
 
 function Main() {
@@ -28,60 +23,30 @@ function Main() {
   const { data: options, error: opError, isLoading: opIsLoading } = useSWR<IOptionsQuery>(apiTags.menu_categories(), simpleGet);
   const { data: goods, error: gError, isLoading: gIsLoading } = useSWR<IGoodsQuery>(apiTags.menu(), simpleGet);
   const { data: promotionsRaw, error: pError, isLoading: pIsLoading } = useSWR<IPromotionsQuery>(apiTags.promotions, simpleGet);
+
   let normalizedPromos: IPromotion[] = []
   if (promotionsRaw?.items) {
     normalizedPromos = promotionsRaw?.items?.map(item => new CPromotion(item)) || [];
   }
 
-  let sortedGoods: ISortedGoods[] = [];
-  /*if (goods?.items) {
-    console.log(goods)
-    sortedGoods = goods.items.reduce((acc: ISortedGoods[], item) => {
-      objectNormalizer(item, "product")
-      const parentGroupId = item.parent_group.id;
-      const groupName = item.parent_group.name;
-      const groupColor = item.parent_group.color;
-      let group = acc.find(group => group.parent_group_id === parentGroupId);
-      if (!group) {
-        group = {
-          parent_group_id: parentGroupId,
-          name: groupName,
-          color: groupColor,
-          items: []
-        };
-        acc.push(group);
-      }
-      group.items.push(item);
-      return acc;
-    }, []);
-  }*/
+  let sortedGoods: IGroupedOption[] = [];
   if (goods?.items) {
-    console.log(goods)
-    sortedGoods = goods.items.reduce((acc: ISortedGoods[], item) => {
-      const good = new CGood(item);
-      const parentGroupId = good.parent_group.id;
-      const groupName = good.parent_group.name;
-      const groupColor = good.parent_group.color;
-      let group = acc.find(group => group.parent_group_id === parentGroupId);
-
-      if (!group) {
-        group = {
-          parent_group_id: parentGroupId,
-          name: groupName,
-          color: groupColor,
-          items: []
-        };
-        acc.push(group);
-      }
-      group.items.push(good);
-      return acc;
-    }, []);
+    sortedGoods = options?.items?.map((option) => {
+      const relatedGoods = goods?.items?.filter((good) => good.parent_group.id === option.id) || [];
+      return {
+        id: option.id,
+        name: option.name,
+        color: option.color,
+        items: relatedGoods.map((good) => new CGood(good)), 
+      };
+    }) || [];
+    console.log(sortedGoods)
   }
 
   const [activeDelivery, setActiveDelivery] = useState('Самовывоз');
   const [isFixed, setIsFixed] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
-  const navWrapperRef = useRef(null);
+  const navWrapperRef = useRef<HTMLDivElement>(null);
   const [navOffsetTop, setNavOffsetTop] = useState(0);
   const {
     search
@@ -123,7 +88,6 @@ function Main() {
           </div>
           <Link className="main-catalog__add-adress hlink-l text-yellow" to="/">Добавить адрес</Link>
         </div>
-        {/*------------------сюда промо-----------------------------*/}
         <aside className={`main-catalog__promotion-holder ${isFixed ? 'main-catalog__promotion-holder_margin-bottom' : ''}`}>
           <Swiper
             slidesPerView="auto"
@@ -131,7 +95,7 @@ function Main() {
             className="main-catalog__promotion promotion-swiper"
             loop={true}
           >
-            {normalizedPromos?.map((item: IPromotion) => (
+            {normalizedPromos?.map((item) => (
               <SwiperSlide key={item.id} className="main-catalog__promotion-slide">
                 <Link to={`/${item.href}`} >
                   <img className="main-catalog__promotion-slide-img" src={`https://nf.kvokka.net${item.cover}`} alt="" />

@@ -7,21 +7,25 @@ import objectNormalizer from '@scripts/helpers/objectNormalizer';
 import getSvg from '@images/svg';
 import SizesCard from '@components/cards/SizesCard'
 import ProductAdditionsCard from '@components/cards/ProductAdditionsCard'
-
+import {
+    IProduct, IProductModifier, IModifier, IProductQuery, INormalizedProduct, INormalizedProductQuery,
+    CNormalizedProduct
+  } from '@myModels/pages/MProduct';
 
 
 function Product() {
     const { id } = useParams();
-    const { data: product, error, isLoading: pIsLoading } = useSWR(apiTags.productById(id), simpleGet);
-    const [selectedProduct, setSelectedProduct] = useState();
+    const { data: product, error, isLoading: pIsLoading } = useSWR<IProductQuery>(apiTags.productById(id), simpleGet);
+    const [selectedProduct, setSelectedProduct] = useState<INormalizedProduct>(new CNormalizedProduct);
     const [selectedThickness, setSelectedThickness] = useState('thin');
-    const [selectedIdBySize, setSelectedIdBySize] = useState();
+    const [selectedIdBySize, setSelectedIdBySize] = useState<string>();
 
     const [currentPrice, setCurrentPrice] = useState(1)
     const [productCount, setProductCount] = useState(1);
-    const [price, setPrice] = useState();
+    const [price, setPrice] = useState<number>();
 
     const [addition, updateAddition] = useState({});
+    let normalizedProducts = [new CNormalizedProduct]
     
     useEffect(() => {
         console.log(addition)
@@ -29,22 +33,20 @@ function Product() {
 
     useEffect(() => {
         if (product && !pIsLoading) {
-            product.items.forEach((item) => {
-                objectNormalizer(item, "singleProduct");
-            });
-            const firstProduct = product.items[0];
+            normalizedProducts = product.items.map((item) => new CNormalizedProduct(item));
+            const firstProduct: INormalizedProduct = normalizedProducts[0] || new CNormalizedProduct;
             setSelectedProduct(firstProduct);
             setCurrentPrice(firstProduct.min_price);
         }
     }, [pIsLoading]);
 
-    useEffect(() => {
+    /*useEffect(() => {
         const totalAdditionPrice = Object.values(addition).reduce((acc, item) => {
             return acc + (item.min_price || 0);
         }, 0);
 
         setPrice((currentPrice + totalAdditionPrice) * productCount);
-    }, [currentPrice, productCount, addition]);
+    }, [currentPrice, productCount, addition]);*/
         
     const {
         mini_plus,
@@ -58,20 +60,20 @@ function Product() {
             <main className="product product_props block-normalizer f-column">
                 <button className="product__exit-btn button-s button-s_slice-left" onClick={() => window.history.back()}>{cross("var(--black)")}</button>
                 <div className="product__img-holder">
-                    <img className="product__img" src={selectedProduct?.image_links[0]} alt="Product image" />
+                    <img className="product__img" src={selectedProduct.image_links[0]} alt="Product image" />
                 </div>
                 <section className="product__content f-column">
                     <div className="profuct__info f-column gap-16">
                         <div className="product__top-info">
                             <div className="product__header f-row">
-                                <h1 className="product__title title-m">{selectedProduct?.parent_group.name}</h1>
-                                {selectedProduct?.energy_full_amount !== 0 && <button className="simple-button">{info("var(--yellow")}</button>}
+                                <h1 className="product__title title-m">{selectedProduct.parent_group.name}</h1>
+                                {selectedProduct.energy_full_amount !== 0 && <button className="simple-button">{info("var(--yellow")}</button>}
                             </div>
-                            {selectedProduct?.weight !== 0 && <span className="product__weight text-m text-yellow">{selectedProduct?.weight * 1000} г</span>}
+                            {selectedProduct.weight !== 0 && <span className="product__weight text-m text-yellow">{selectedProduct.weight * 1000} г</span>}
                         </div>
-                        <span className="product__text text-l">{selectedProduct?.description}</span>
+                        <span className="product__text text-l">{selectedProduct.description}</span>
                     </div>
-                    {selectedProduct && selectedProduct.isPizza === true && (
+                    {selectedProduct.isPizza && (
                         <>
                             <div className="product__options">
                                 <h2 className="product__option-article text-yellow text-m">Тип теста</h2>
@@ -80,7 +82,7 @@ function Product() {
                                     <button className={`product__option button-text ${selectedThickness === 'traditional' ? 'product__option_active' : ''}`} onClick={() => setSelectedThickness('traditional')}>Традиционное</button>
                                 </div>
                             </div>
-                            <SizesCard data={product.items} selectedThickness={selectedThickness} setSelectedIdBySize={setSelectedIdBySize} selectedIdBySize={selectedIdBySize} setCurrentPrice={setCurrentPrice} />
+                            <SizesCard data={normalizedProducts} selectedThickness={selectedThickness} setSelectedIdBySize={setSelectedIdBySize} selectedIdBySize={selectedIdBySize} setCurrentPrice={setCurrentPrice} />
                             <div className="product__options">
                                 <h2 className="product__option-article text-yellow text-m">Дополнительные добавки</h2>
                                 <div className="product__additions-holder">
