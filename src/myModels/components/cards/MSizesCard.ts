@@ -19,7 +19,7 @@ export class COptions implements IOptions {
     id: string;
     min_price: number;
 
-    constructor(data: Partial<IOptions>) {
+    constructor(data: Partial<IOptions> = {}) {
         this.thickness = data.thickness ?? "thin";
         this.size = data.size ?? 0;
         this.id = data.id ?? "";

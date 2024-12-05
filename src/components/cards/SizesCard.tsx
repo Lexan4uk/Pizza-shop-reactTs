@@ -24,7 +24,7 @@ const SizesCard = ({ data , selectedThickness, setSelectedIdBySize, selectedIdBy
 
         return acc;
     }, {}), [data]);
-    const availableSizes = options[selectedThickness] || [new COptions({})]
+    const availableSizes = options[selectedThickness] || [new COptions()]
     useEffect(() => {
         console.log(options)
         setSelectedIdBySize(availableSizes[0].id);
