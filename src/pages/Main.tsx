@@ -40,7 +40,6 @@ function Main() {
         items: relatedGoods.map((good) => new CGood(good)), 
       };
     }) || [];
-    console.log(sortedGoods)
   }
 
   const [activeDelivery, setActiveDelivery] = useState('Самовывоз');
@@ -93,7 +92,6 @@ function Main() {
             slidesPerView="auto"
             spaceBetween={12}
             className="main-catalog__promotion promotion-swiper"
-            loop={true}
           >
             {normalizedPromos?.map((item) => (
               <SwiperSlide key={item.id} className="main-catalog__promotion-slide">

@@ -24,8 +24,9 @@ function Product() {
     const [productCount, setProductCount] = useState(1);
     const [price, setPrice] = useState<number>();
 
-    const [addition, updateAddition] = useState({});
-    let normalizedProducts = [new CNormalizedProduct]
+    const [addition, updateAddition] = useState<IModifier[]>([]);
+    const [normalizedProducts, setNormalizedProducts] = useState<INormalizedProduct[]>([new CNormalizedProduct()]);
+
     
     useEffect(() => {
         console.log(addition)
@@ -33,20 +34,22 @@ function Product() {
 
     useEffect(() => {
         if (product && !pIsLoading) {
-            normalizedProducts = product.items.map((item) => new CNormalizedProduct(item));
-            const firstProduct: INormalizedProduct = normalizedProducts[0] || new CNormalizedProduct;
+            const products = product.items.map((item) => new CNormalizedProduct(item));
+            setNormalizedProducts(products);
+            const firstProduct: INormalizedProduct = products[0] || new CNormalizedProduct();
             setSelectedProduct(firstProduct);
             setCurrentPrice(firstProduct.min_price);
         }
-    }, [pIsLoading]);
+    }, [product, pIsLoading]);
+    
 
-    /*useEffect(() => {
+    useEffect(() => {
         const totalAdditionPrice = Object.values(addition).reduce((acc, item) => {
             return acc + (item.min_price || 0);
         }, 0);
 
         setPrice((currentPrice + totalAdditionPrice) * productCount);
-    }, [currentPrice, productCount, addition]);*/
+    }, [currentPrice, productCount, addition]);
         
     const {
         mini_plus,
@@ -86,7 +89,8 @@ function Product() {
                             <div className="product__options">
                                 <h2 className="product__option-article text-yellow text-m">Дополнительные добавки</h2>
                                 <div className="product__additions-holder">
-                                    {selectedProduct.product_modifiers.map((addition) => (
+                                    {selectedProduct.product_modifiers.map((addition : IProductModifier) => (
+                                        
                                         <ProductAdditionsCard key={addition.id} addition={addition} updateAddition={updateAddition}/>
                                     ))}
                                 </div>

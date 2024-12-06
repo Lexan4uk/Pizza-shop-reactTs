@@ -7,16 +7,19 @@ import { useState, useEffect } from 'react';
 import InputCard from '@components/cards/InputCard'
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
 import useCity from '@scripts/custom_hooks/useCity';
-
+import {
+    IRawCities, ICity, ICityNormalized,
+    CCityNormalized
+} from '@myModels/pages/MSelectCity';
 
 function SelectCity() {
-    const { data: rawCities, error: cError, isLoading: cIsLoading } = useSWR(apiTags.city, simpleGet);
+    const { data: rawCities, error: cError, isLoading: cIsLoading } = useSWR<IRawCities>(apiTags.city, simpleGet);
 
     const [searchItem, setSearchItem] = useState('')
-    const [cities, setCities] = useState()
-    const [filteredCities, setFilteredCities] = useState()
+    const [cities, setCities] = useState<ICityNormalized[]>()
+    const [filteredCities, setFilteredCities] = useState<ICityNormalized[]>([new CCityNormalized])
 
-    const [selectedCity, setSelectedCity] = useState()
+    const [selectedCity, setSelectedCity] = useState<ICityNormalized>()
 
     const methods = useForm();
     const { handleSubmit, trigger, formState: { errors } } = methods;
@@ -42,11 +45,6 @@ function SelectCity() {
         }
     }, [searchItem, cities]);
 
-    useEffect(() => {
-        console.log(selectedCity)
-    }, [selectedCity])
-
-
     const {
         cross,
         search
@@ -55,15 +53,15 @@ function SelectCity() {
     const {
         isCityAdded,
         initCity
-      } = useCity()
+    } = useCity()
 
     const navigate = useNavigate();
 
-    const handleChange = (event) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchItem(event.target.value);
     };
     const handleSave = () => {
-        localStorage.setItem("city", JSON.stringify({ 'cityId': selectedCity.id, 'cityName': selectedCity.name, "classifier_id": selectedCity.classifier_id }));
+        localStorage.setItem("city", JSON.stringify({ 'cityId': selectedCity?.id, 'cityName': selectedCity?.name, "classifier_id": selectedCity?.classifier_id }));
         initCity()
         navigate("/")
     }
@@ -78,12 +76,25 @@ function SelectCity() {
                     <h1 className="select-city__article title-m">Выберите город</h1>
                     <FormProvider {...methods} >
                         <form className="select-city__form f-row">
-                            <InputCard type="SimpleInput" inputType="text" setPlaceholder="Введите город" setValue={searchItem} setOnChange={handleChange} setIcon={search(undefined, undefined, undefined, "select-city__search-icon")} />
+                            <InputCard
+                                type="SimpleInput"
+                                dataName="city"
+                                mask=""
+                                replacement={undefined}
+                                isShowMask={false}
+                                inputType="text"
+                                setPlaceholder="Введите город"
+                                validationRules={{}}
+                                setValue={searchItem}
+                                setOnChange={handleChange}
+                                setIcon={search(undefined, undefined, undefined, "select-city__search-icon")}
+                                additionClass=""
+                            />
                         </form>
                     </FormProvider>
                     <div className="select-city__options-holder f-column">
-                        {filteredCities?.map((city, index) => (
-                            <button key={city.id} id={index} className={`select-city__option simple-button ${selectedCity?.id === city.id && "select-city__option_selected"}`} onClick={() => setSelectedCity(city)}>{city.name}
+                        {filteredCities.map((city, index) => (
+                            <button key={city.id} id={String(index)} className={`select-city__option simple-button ${selectedCity?.id === city.id && "select-city__option_selected"}`} onClick={() => setSelectedCity(city)}>{city.name}
                             </button>
                         ))}
                     </div>

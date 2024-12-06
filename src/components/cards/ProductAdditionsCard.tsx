@@ -1,9 +1,15 @@
 import '@styles/pages/Product.scss';
 import getSvg from '@images/svg';
 import { useState } from 'react';
+import { 
+    IProductAdditionsCard
+ } from '@myModels/components/cards/MProductAdditionsCard'
+ import { IProductModifier, IModifier } from '@myModels/pages/MProduct';
+ 
 
-const ProductAdditionsCard = ({ addition, updateAddition }) => {
+const ProductAdditionsCard = ({ addition, updateAddition }: IProductAdditionsCard) => {
     const normalizedAddition = addition.product;
+    console.log(addition)
     const {
         mini_plus,
         mini_minus,
@@ -15,21 +21,25 @@ const ProductAdditionsCard = ({ addition, updateAddition }) => {
         type = "checkbox"
 
     const handleAdd = () => {
-        setBtnActive(false)
-        updateAddition(prevAdditions => ({
-            ...prevAdditions,
-            [normalizedAddition.id]: normalizedAddition,
-        }));
-    };
+    setBtnActive(false);
+    updateAddition((prevAdditions: IModifier[]) => {
+        const exists = prevAdditions.some(item => item.id === normalizedAddition.id);
+        if (!exists) {
+            return [...prevAdditions, normalizedAddition];
+        }
+        return prevAdditions; 
+    });
+};
 
-    const handleRemove = () => {
-        setBtnActive(true)
-        updateAddition(prevAdditions => {
-            const { [normalizedAddition.id]: removed, ...rest } = prevAdditions;
-            return rest;
-        });
-    };
-    const handleCheckboxChange = (event) => {
+const handleRemove = () => {
+    setBtnActive(true);
+    updateAddition((prevAdditions: IModifier[]) => {
+        return prevAdditions.filter(item => item.id !== normalizedAddition.id);
+    });
+};
+
+    
+    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
             handleAdd()
         } else {

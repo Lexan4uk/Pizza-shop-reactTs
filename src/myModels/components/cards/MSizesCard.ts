@@ -1,4 +1,4 @@
-import { INormalizedProduct } from 'src/myModels/pages/MProduct';
+import { INormalizedProduct,CNormalizedProduct  } from '@myModels/pages/MProduct';
 
 export interface ISizesCard {
     data: INormalizedProduct[];

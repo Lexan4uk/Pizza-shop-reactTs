@@ -17,7 +17,8 @@ const getCityId = (): string => {
         return JSON.parse(city).cityId;
     }
     else {
-        return "Город не определён"
+        window.location.href = '/city'
+        return "Выбор города"
     }
 }
 

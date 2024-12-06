@@ -74,8 +74,8 @@ export class CNormalizedProduct implements INormalizedProduct {
     constructor(data: Partial<INormalizedProduct> = {}) {
         this.id = data.id || "default-id";
         this.isPizza = data.isPizza || false;
-        this.size = data.size || 0;  // по умолчанию 30 см
-        this.thickness = data.thickness || "thin";  // по умолчанию тонкое
+        this.size = data.size || 0; 
+        this.thickness = data.thickness || "thin";  
         this.carbohydrates_amount = data.carbohydrates_amount || 0;
         this.carbohydrates_full_amount = data.carbohydrates_full_amount || 0;
         this.description = data.description || "Описание отсутствует";

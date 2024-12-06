@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import option from '@components/menu_elements/Footer_option'
 import useAuth from '@scripts/custom_hooks/useAuth';
 import { Link } from "react-router-dom";
-
-
-function Footer({ active }) {
+import { IFooter } from '@myModels/components/MFooter';
+ 
+function Footer({ active }: IFooter) {
     const {
         pizza,
         person,
