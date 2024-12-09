@@ -5,6 +5,7 @@
         width: 360px;
         z-index: 3;
     }
+
     &__header-arrow {
         position: absolute;
         left: 0;
@@ -12,7 +13,49 @@
         transform: translateY(-10%);
         --iconcolor: var(--white)
     }
+
+    &__content {
+        padding-top: 60px;
+    }
+
     &__header-title {
         margin: 0 auto !important;
+    }
+
+    &__addresses-holder {
+        margin-top: 16px;
+    }
+
+    &__address-button-holder {
+        text-align: left;
+        padding: 12px 0 !important;
+        border-top: 1px solid var(--dark-gray) !important;
+        position: relative;
+
+        &:last-child {
+            border-bottom: 1px solid var(--dark-gray) !important;
+        }
+    }
+
+    &__delivery-option {
+        color: var(--gray-text-inactive);
+        border: 1px solid var(--dark-gray);
+        background: none;
+        flex: 1;
+        padding: 6px 20px;
+
+        &_active {
+            color: var(--yellow);
+            border: 1px solid var(--yellow);
+        }
+    }
+    &__address-button-save {
+        position: absolute;
+        right: 0;
+        margin-right: 10px;
+        --iconcolor: var(--white) !important;
+        &:hover {
+            --iconcolor: var(--yellow) !important;
+        }
     }
 }

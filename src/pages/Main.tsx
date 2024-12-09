@@ -13,16 +13,17 @@ import getSvg from '@images/svg'
 import { Link } from "react-router-dom";
 import { simpleGet, apiTags } from "@api/simpleGet"
 import {
-  IGoodsQuery, IOptionsQuery, IPromotionsQuery, IPromotion, IGroupedOption,
+  IPromotion, IGroupedOption, IOption, IGood,
   CPromotion, CGood
 } from '@myModels/pages/MMain';
+import { BaseApiResponseType } from '@myModels/api/BaseApiTypes';
 
 
 function Main() {
 
-  const { data: options, error: opError, isLoading: opIsLoading } = useSWR<IOptionsQuery>(apiTags.menu_categories(), simpleGet);
-  const { data: goods, error: gError, isLoading: gIsLoading } = useSWR<IGoodsQuery>(apiTags.menu(), simpleGet);
-  const { data: promotionsRaw, error: pError, isLoading: pIsLoading } = useSWR<IPromotionsQuery>(apiTags.promotions, simpleGet);
+  const { data: options, error: opError, isLoading: opIsLoading } = useSWR<BaseApiResponseType & { items: IOption[] }>(apiTags.menu_categories(), simpleGet);
+  const { data: goods, error: gError, isLoading: gIsLoading } = useSWR<BaseApiResponseType & { items: IGood[] }>(apiTags.menu(), simpleGet);
+  const { data: promotionsRaw, error: pError, isLoading: pIsLoading } = useSWR<BaseApiResponseType & { items: IPromotion[] }>(apiTags.promotions, simpleGet);
 
   let normalizedPromos: IPromotion[] = []
   if (promotionsRaw?.items) {
@@ -37,23 +38,27 @@ function Main() {
         id: option.id,
         name: option.name,
         color: option.color,
-        items: relatedGoods.map((good) => new CGood(good)), 
+        items: relatedGoods.map((good) => new CGood(good)),
       };
     }) || [];
   }
 
-  const [activeDelivery, setActiveDelivery] = useState('Самовывоз');
   const [isFixed, setIsFixed] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const navWrapperRef = useRef<HTMLDivElement>(null);
   const [navOffsetTop, setNavOffsetTop] = useState(0);
+  const [delivery, setDelivery] = useState<string | null>()
   const {
-    search
+    search,
+    pen
   } = getSvg()
-
-  const handleDeliveryClick = (buttonName: string) => {
-    setActiveDelivery(buttonName);
-  };
+  useEffect(() => {
+    const deliveryData = localStorage.getItem("deliveryData");
+    if (deliveryData) {
+      const { deliveryText } = JSON.parse(deliveryData);
+      setDelivery(deliveryText)
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,16 +81,17 @@ function Main() {
     <>
       <Header />
       <main className="main-catalog main-catalog_props">
-        <div className="main-catalog__delivery-holder f-column block-normalizer">
-          <div className="main-catalog__delivery-options f-row">
-            <button className={`main-catalog__delivery-option button-text ${activeDelivery === 'Самовывоз' ? 'main-catalog__delivery-option_active' : ''}`} onClick={() => handleDeliveryClick('Самовывоз')}>
-              Самовывоз
-            </button>
-            <button className={`main-catalog__delivery-option button-text ${activeDelivery === 'Доставка' ? 'main-catalog__delivery-option_active' : ''}`} onClick={() => handleDeliveryClick('Доставка')} >
-              Доставка
-            </button>
-          </div>
-          <Link className="main-catalog__add-adress hlink-l text-yellow" to="/">Добавить адрес</Link>
+        <div className="main-catalog__delivery-holder f-column block-normalizer gap-8">
+          {delivery ? (
+            <>
+              <h2 className="main-catalog__delivery-title title-l">Доставим по адресу</h2>
+              <div className="main-catalog__delivery-buttons-holder f-row gap-4">
+                <button className='main-catalog__delivery-text hlink-l text-yellow simple-button'>{delivery}</button>
+                <Link to="profile/addresses" className='main-catalog__delivery-pan'>{pen()}</Link>
+              </div>
+            </>) : (
+            <Link className="main-catalog__add-adress hlink-l text-yellow" to="profile/addresses">Добавить адрес получения</Link>
+          )}
         </div>
         <aside className={`main-catalog__promotion-holder ${isFixed ? 'main-catalog__promotion-holder_margin-bottom' : ''}`}>
           <Swiper

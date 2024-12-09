@@ -1,7 +1,3 @@
-export interface IRawCities {
-    code: number;
-    items: ICity[];
-}
 export interface ICity {
     id: string;
     name: string;

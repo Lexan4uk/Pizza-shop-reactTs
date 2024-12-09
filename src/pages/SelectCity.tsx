@@ -8,12 +8,14 @@ import InputCard from '@components/cards/InputCard'
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
 import useCity from '@scripts/custom_hooks/useCity';
 import {
-    IRawCities, ICity, ICityNormalized,
+    ICity, ICityNormalized,
     CCityNormalized
 } from '@myModels/pages/MSelectCity';
+import { BaseApiResponseType } from '@myModels/api/BaseApiTypes';
+
 
 function SelectCity() {
-    const { data: rawCities, error: cError, isLoading: cIsLoading } = useSWR<IRawCities>(apiTags.city, simpleGet);
+    const { data: rawCities, error: cError, isLoading: cIsLoading } = useSWR<BaseApiResponseType & {items: ICity[]}>(apiTags.city, simpleGet);
 
     const [searchItem, setSearchItem] = useState('')
     const [cities, setCities] = useState<ICityNormalized[]>()
@@ -22,7 +24,7 @@ function SelectCity() {
     const [selectedCity, setSelectedCity] = useState<ICityNormalized>()
 
     const methods = useForm();
-    const { handleSubmit, trigger, formState: { errors } } = methods;
+    const { formState: { errors } } = methods;
 
     useEffect(() => {
         if (rawCities && rawCities.items) {

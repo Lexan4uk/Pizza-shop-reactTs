@@ -1,8 +1,3 @@
-export interface IGoodsQuery {
-    code: number;
-    count: number;
-    items: IGood[];
-}
 export interface IGood {
     code: string;
     description: string;
@@ -73,12 +68,6 @@ export class CParentGroup implements IParentGroup {
         this.image_links = data.image_links ?? []
     }
 }
-
-export interface IOptionsQuery {
-    code: number;
-    count: number;
-    items: IOption[];
-}
 export interface IOption {
     id: string;
     code: string;
@@ -89,12 +78,6 @@ export interface IOption {
     menu_category: boolean;
 }
 
-
-export interface IPromotionsQuery {
-    code: number;
-    count: number;
-    items: IPromotion[];
-}
 export interface IPromotion {
     id: number;
     title: string;

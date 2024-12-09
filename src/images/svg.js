@@ -213,6 +213,13 @@ const getSvg = () => {
                 <path fill={fill} d="M15.2377 14.13L9.46265 19.905L11.1123 21.5547L18.537 14.13L11.1123 6.70535L9.46266 8.35619L15.2377 14.1312L15.2377 14.13Z" />
             </svg>)
     }
+    const done = (fill = "var(--iconcolor)", height = 28, width = 28, customclass = "") => {
+        return (
+            <svg className={`custom-svg ${customclass}`} width={width} height={height} viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.4091 18.2836L7.35227 14.209L6 15.5672L11.4091 21L23 9.35821L21.6477 8L11.4091 18.2836Z" fill={fill} />
+            </svg>
+        )
+    }
 
     return {
         pizza,
@@ -237,7 +244,8 @@ const getSvg = () => {
         eye,
         door,
         pen,
-        arrow_right
+        arrow_right,
+        done
     }
 }
 export default getSvg

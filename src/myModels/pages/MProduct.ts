@@ -1,13 +1,3 @@
-export interface IProductQuery {
-    code: number;
-    count: number;
-    items: IProduct[];
-}
-export interface INormalizedProductQuery {
-    code: number;
-    count: number;
-    items: INormalizedProduct[];
-}
 export interface IProduct {
     id: string;
     carbohydrates_amount: number;

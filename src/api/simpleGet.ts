@@ -8,7 +8,9 @@ export const apiTags = {
     promotionById: (id: string | undefined) => `promotion/${id}`,
     productById: (id: string | undefined) => `products/menu/${id}?city=${getCityId()}`,
     city: "delivery/city/filter_city",
-    deliver_points: "delivery/delivery_point/get"
+    deliver_points: "delivery/delivery_point/get",
+    pickup_points: () =>  `organizations/city/${getCityId()}`,
+    order_types: "order_types"
 };
 
 const getCityId = (): string => {

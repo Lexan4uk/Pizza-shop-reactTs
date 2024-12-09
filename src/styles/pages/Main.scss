@@ -4,23 +4,6 @@
     padding-top: 16px;
     padding-bottom: 92px;
   }
-
-  &__delivery-holder {
-  }
-
-  &__delivery-option {
-    color: var(--gray-text-inactive);
-    border: 1px solid var(--dark-gray);
-    background: none;
-    flex: 1;
-    padding: 6px 20px;
-
-    &_active {
-      color: var(--yellow);
-      border: 1px solid var(--yellow);
-    }
-  }
-
   &__add-adress {
     text-decoration: underline;
     margin: 16px auto 0 auto;

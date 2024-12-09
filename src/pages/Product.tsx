@@ -8,14 +8,16 @@ import getSvg from '@images/svg';
 import SizesCard from '@components/cards/SizesCard'
 import ProductAdditionsCard from '@components/cards/ProductAdditionsCard'
 import {
-    IProduct, IProductModifier, IModifier, IProductQuery, INormalizedProduct, INormalizedProductQuery,
+    IProduct, IProductModifier, IModifier, INormalizedProduct,
     CNormalizedProduct
   } from '@myModels/pages/MProduct';
+  import { BaseApiResponseType } from '@myModels/api/BaseApiTypes';
+
 
 
 function Product() {
     const { id } = useParams();
-    const { data: product, error, isLoading: pIsLoading } = useSWR<IProductQuery>(apiTags.productById(id), simpleGet);
+    const { data: product, error, isLoading: pIsLoading } = useSWR<BaseApiResponseType & {items: IProduct[]}>(apiTags.productById(id), simpleGet);
     const [selectedProduct, setSelectedProduct] = useState<INormalizedProduct>(new CNormalizedProduct);
     const [selectedThickness, setSelectedThickness] = useState('thin');
     const [selectedIdBySize, setSelectedIdBySize] = useState<string>();
