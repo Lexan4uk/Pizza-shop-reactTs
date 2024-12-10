@@ -2,13 +2,13 @@ import '@styles/pages/Auth.scss';
 import { useState, useEffect } from 'react';
 import LoginPass from '@components/auth_elements/LoginPass'
 import PhoneEnter from '@components/auth_elements/PhoneEnter'
-
+import { IAuthData, CAuthData} from '@myModels/pages/MAuth';
 
 
 const Auth = () => {
 
     const [label, setLabel] = useState(1);
-    const [authData, setAuthData] = useState({})
+    const [authData, setAuthData] = useState<IAuthData>(new CAuthData())
     let content;
     switch (label) {
         case 1:

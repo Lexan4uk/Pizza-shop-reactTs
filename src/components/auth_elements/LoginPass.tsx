@@ -5,10 +5,10 @@ import getSvg from '@images/svg';
 import useAuth from '@scripts/custom_hooks/useAuth';
 import useSWR from 'swr';
 import { useNavigate } from 'react-router-dom';
+import { ILoginPass, IResponceToken } from '@myModels/components/auth_elements/LoginPass';
+import { ISimplePost } from "@myModels/api/MSimplePost";
 
-
-
-const LoginPass = ({ authData }) => {
+const LoginPass = ({ authData }: ILoginPass) => {
     const [password, setPassword] = useState("")
     const [showPass, setShowPass] = useState(false)
     const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ const LoginPass = ({ authData }) => {
             password: password
         };
 
-        const responseToken = await simplePost(postTags.get_token, completeAuthData);
+        const responseToken = await simplePost<IResponceToken>({path: postTags.get_token, data: completeAuthData} as ISimplePost);
         if (responseToken) {
             setLoading(false)
             if (responseToken.token) {
@@ -43,8 +43,6 @@ const LoginPass = ({ authData }) => {
                 setErrorMessage(responseToken.message)
             }
         }
-
-
     };
 
     return (

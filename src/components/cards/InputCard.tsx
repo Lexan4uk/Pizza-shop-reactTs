@@ -5,19 +5,19 @@ import { useState } from "react";
 import { IInputCard, CInputCard } from '@myModels/components/cards/MInputCard';
 
 function InputCard({
-    type,
-    dataName,
-    mask,
-    replacement,
-    isShowMask,
-    inputType,
-    setPlaceholder,
-    validationRules,
-    setValue,
-    setOnChange,
-    setIcon,
-    additionClass
-}: IInputCard) {
+    type = "Input",
+    dataName = "",
+    mask = "",
+    replacement = undefined,
+    isShowMask = false,
+    inputType = "text",
+    setPlaceholder = "",
+    validationRules = {},
+    setValue = "",
+    setOnChange = undefined,
+    setIcon = undefined,
+    additionClass = ""
+}: Partial<IInputCard>) {
 
     const cardData = new CInputCard({
         type,

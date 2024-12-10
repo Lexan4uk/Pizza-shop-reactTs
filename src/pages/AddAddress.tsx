@@ -7,7 +7,7 @@ import { useForm, FormProvider, useFormContext } from "react-hook-form";
 import InputCard from '@components/cards/InputCard'
 import useCity from '@scripts/custom_hooks/useCity';
 import { useEffect, useState } from 'react';
-
+import { IAddressState, CAddressState } from '@myModels/pages/MAddAddress';
 
 
 function AddAddress() {
@@ -22,16 +22,26 @@ function AddAddress() {
     const methods = useForm();
     const { handleSubmit, trigger, formState: { errors }, register } = methods;
 
-    const { selectedStreetName, selectedStreetId } = location.state || {};
-    console.log(location.state)
-    const [street, setStreet] = useState();
-    const [house, setHouse] = useState();
+    const [addressState, setAddressState] = useState<CAddressState>();
 
     useEffect(() => {
-        methods.setValue('street', selectedStreetId);
-        setStreet(selectedStreetName);
-    }, [selectedStreetId]);
-    console.log(cityData.classifier_id)
+        const initialData = new CAddressState(location.state || "");
+        setAddressState(initialData);
+        //console.log(location.state)
+    }, [location.state]);
+    const [street, setStreet] = useState<string>();
+    const [house, setHouse] = useState<string>();
+
+    useEffect(() => {
+        console.log(addressState)
+        if (addressState) {
+            setStreet(addressState.selectedStreetId);
+            setHouse(addressState.selectedHouseName);
+        }
+    }, [addressState]);
+    useEffect(() => {
+        //console.log(house)
+    }, [house])
 
 
 
@@ -42,7 +52,7 @@ function AddAddress() {
         }
     };
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (data: any) => {
         console.log(data)
     }
 
@@ -68,41 +78,41 @@ function AddAddress() {
                                 <h2 className="add-address__input-article text-m">Улица</h2>
                                 <div className={`inputcard__main-box f-column gap-4`}>
                                     <div className={`inputcard__input-border`}>
-                                        <input defaultValue={street && street} className="inputcard__input" placeholder="Улица" onClick={() => navigate("street")} />
+                                        <input defaultValue={street} className="inputcard__input" placeholder="Улица" onClick={() => navigate("street")} />
                                     </div>
                                 </div>
                             </div>
                             <div className="add-address__input-holder-grid gap-16">
-                                <div className={`add-address__input-holder f-column gap-4 ${!street && "add-address__input-inactive"}`}>
+                                <div className={`add-address__input-holder f-column gap-4 ${street ? "" : "add-address__input-inactive"}`}>
                                     <h2 className="add-address__input-article text-m">Дом</h2>
                                     <div className={`inputcard__main-box f-column gap-4`}>
                                         <div className={`inputcard__input-border`}>
-                                            <input defaultValue={house && house} className="inputcard__input" placeholder="Дом" onClick={() => navigate("house", {
+                                            <input defaultValue={house} className="inputcard__input" placeholder="Дом" onClick={() => navigate("house", {
                                                 state: {
-                                                    selectedStreetId: selectedStreetId
+                                                    selectedStreetId: addressState?.selectedStreetId || '',
                                                 }
                                             })} />
                                         </div>
                                     </div>
                                 </div>
-                                <div className={`add-address__input-holder f-column gap-4 add-address__optional-input ${!street && "add-address__input-inactive"}`}>
+                                <div className={`add-address__input-holder f-column gap-4 add-address__optional-input ${!house && "add-address__input-inactive"}`}>
                                     <h2 className="add-address__input-article text-m">Квартира</h2>
                                     <InputCard dataName="flat" type="AddAddressInput" setPlaceholder="Квартира" />
                                 </div>
-                                <div className={`add-address__input-holder f-column gap-4 add-address__optional-input ${!street && "add-address__input-inactive"}`}>
+                                <div className={`add-address__input-holder f-column gap-4 add-address__optional-input ${!house && "add-address__input-inactive"}`}>
                                     <h2 className="add-address__input-article text-m">Подъезд</h2>
                                     <InputCard dataName="entrance" type="AddAddressInput" setPlaceholder="Подъезд" />
                                 </div>
-                                <div className={`add-address__input-holder f-column gap-4 add-address__optional-input ${!street && "add-address__input-inactive"}`}>
+                                <div className={`add-address__input-holder f-column gap-4 add-address__optional-input ${!house && "add-address__input-inactive"}`}>
                                     <h2 className="add-address__input-article text-m">Этаж</h2>
                                     <InputCard dataName="floor" type="AddAddressInput" setPlaceholder="Этаж" />
                                 </div>
                             </div>
-                            <div className={`add-address__input-holder f-column gap-4 add-address__optional-input ${!street && "add-address__input-inactive"}`}>
+                            <div className={`add-address__input-holder f-column gap-4 add-address__optional-input ${!house && "add-address__input-inactive"}`}>
                                 <h2 className="add-address__input-article text-m">Код домофора</h2>
                                 <InputCard dataName="doorphone" type="AddAddressInput" setPlaceholder="Код домофона" />
                             </div>
-                            <div className={`add-address__input-holder f-column gap-4 add-address__optional-input ${!street && "add-address__input-inactive"}`}>
+                            <div className={`add-address__input-holder f-column gap-4 add-address__optional-input ${!house && "add-address__input-inactive"}`}>
                                 <h2 className="add-address__input-article text-m">Комментарии</h2>
                                 <InputCard dataName="comment" type="AddAddressTextArea" setPlaceholder="Комментарии об адресе доставки" />
                             </div>

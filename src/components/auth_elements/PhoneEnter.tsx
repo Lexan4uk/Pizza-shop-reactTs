@@ -2,9 +2,10 @@ import '@styles/pages/Auth.scss';
 import { useState, useEffect } from 'react';
 import { InputMask } from '@react-input/mask';
 import { simplePost, apiTags } from "@api/simplePost"
+import { IPhoneEnter } from '@myModels/components/auth_elements/PhoneEnter';
+import { ISimplePost } from "@myModels/api/MSimplePost";
 
-
-const PhoneEnter = ({ setLabel, setAuthData }) => {
+const PhoneEnter = ({ setLabel, setAuthData }: IPhoneEnter) => {
     const [rawPhone, setRawPhone] = useState('');
     const [normalizedPhone, setNormalizedPhone] = useState('');
     const [isPhoneComplete, setIsPhoneComplete] = useState(false)
@@ -12,7 +13,7 @@ const PhoneEnter = ({ setLabel, setAuthData }) => {
 
     useEffect(() => {
         const normalizedPhoneBuffer = rawPhone.replace(/[^+\d]/g, '');
-        
+
         if (normalizedPhoneBuffer.length === 12) {
             setIsPhoneComplete(true);
             setNormalizedPhone(normalizedPhoneBuffer)
@@ -26,24 +27,27 @@ const PhoneEnter = ({ setLabel, setAuthData }) => {
         const data = {
             "phone": `${normalizedPhone}`
         };
-        
-        const response = await simplePost(apiTags.phone_enter, data);
+
+        const response = await simplePost({ path: apiTags.phone_enter, data: data } as ISimplePost);
         setIsQuerry(false)
-        switch (response.code) {
-            case 201:
-                setAuthData({
-                    "phoneNumber": `${normalizedPhone}`
-                })
-                setLabel(2)
-                break
-            case 200:
-                console.log("Регистрация")
-                break
-            case 300:
-                console.log(response.message)
-            default:
-                console.log(response.code)
-                break
+        if (response?.code) {
+            switch (response.code) {
+                case 201:
+                    setAuthData((prev) => ({
+                        ...prev,
+                        phoneNumber: normalizedPhone,
+                    }));
+                    setLabel(2)
+                    break
+                case 200:
+                    console.log("Регистрация")
+                    break
+                case 300:
+                    console.log(response.message)
+                default:
+                    console.log(response.code)
+                    break
+            }
         }
     };
 
@@ -55,7 +59,7 @@ const PhoneEnter = ({ setLabel, setAuthData }) => {
                         <h1 className="auth__article title-m">Авторизация</h1>
                         <span className="auth__top-text text-l">Для отслеживания и управления заказами укажите свой номер</span>
                         <div className="auth__input-holder f-row">
-                            <InputMask className="auth__input" mask='+7 (___) ___-__-__' replacement={{ _: /\d/ }} showMask type='tel' onChange={(e) => { setRawPhone(e.target.value)}}/>
+                            <InputMask className="auth__input" mask='+7 (___) ___-__-__' replacement={{ _: /\d/ }} showMask type='tel' onChange={(e) => { setRawPhone(e.target.value) }} />
                         </div>
                     </div>
                 </div>

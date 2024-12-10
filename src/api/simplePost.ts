@@ -11,9 +11,9 @@ export const apiTags = {
     userSetDeliveryType: (val: string) => `user/attach/current_order_type/${val}`
 };
 
-export async function simplePost({path, data}: ISimplePost) {
+export async function simplePost<T = BaseApiResponseType>({path, data}: ISimplePost) {
     if (path && data) {
-        const response = await api.post<BaseApiResponseType>(path, data);
+        const response = await api.post<T>(path, data);
         return response.data;
     }
     else {
