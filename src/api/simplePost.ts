@@ -8,7 +8,8 @@ export const apiTags = {
     edit_user: "user/profile",
     userSetPickUpPoint: (id: string) => `user/attach/organization/${id}`,
     userSetDeliveryPoint: (id: number) => `user/attach/current_delivery_point/${id}`,
-    userSetDeliveryType: (val: string) => `user/attach/current_order_type/${val}`
+    userSetDeliveryType: (val: string) => `user/attach/current_order_type/${val}`,
+    add_delivery_point: "delivery/delivery_point/add"
 };
 
 export async function simplePost<T = BaseApiResponseType>({path, data}: ISimplePost) {

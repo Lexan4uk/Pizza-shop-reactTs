@@ -1,8 +1,8 @@
 import '@styles/cards/MenuCard.scss';
 import getSvg from '@images/svg'
+import { IGood } from '@myModels/pages/MMain';
 
-
-function ProductCard({ data }) {
+function ProductCard({data} : { data: IGood }) {
     const {
         productcard_border,
         circle,
@@ -11,7 +11,7 @@ function ProductCard({ data }) {
         baked,
         fried
     } = getSvg()
-    const tagProcessing = (tag) => {
+    const tagProcessing = (tag: string) => {
         switch (tag) {
             case "Premium":
                 return premium()
@@ -20,7 +20,7 @@ function ProductCard({ data }) {
             case "Запеченный":
                 return baked()
             default:
-                break
+                return null;
         }
     }
     return (
@@ -31,9 +31,9 @@ function ProductCard({ data }) {
                 <div className="menu-card__img-holder">
                     <img className="menu-card__img" src={data.image_links[0]} alt="Product image" />
                     {data.tags.length !== 0 && (
-                        data?.tags?.map((tag, index) => {
+                        data?.tags?.map((tag, index) => (
                             <div className="menu-card__tag" key={index}>{tagProcessing(tag)}</div>
-                        })
+                        ))
                     )
                     }
                 </div>

@@ -3,7 +3,6 @@ import { simpleGet, apiTags } from "@api/simpleGet";
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect, useMemo } from 'react';
 import useSWR from 'swr';
-import objectNormalizer from '@scripts/helpers/objectNormalizer';
 import getSvg from '@images/svg';
 import SizesCard from '@components/cards/SizesCard'
 import ProductAdditionsCard from '@components/cards/ProductAdditionsCard'

@@ -1,7 +1,7 @@
 import { kladrapi } from "@api/api";
 
 
-export async function kladrGet(params) {
+export async function kladrGet(params: string) {
     if (params) {
         const response = await kladrapi.get(`api.php?${params}`);
         return response.data;

@@ -52,6 +52,7 @@ const PickupComp = ({ delivery_type, delivery_id }: IAddressComp) => {
             path: postTags.userSetPickUpPoint(data.uuid),
             data: data.uuid,
         } as ISimplePost)
+        
         if (setDeliveryType?.code == 200 && setPickUpPoint?.code == 200) {
             localStorage.setItem("deliveryData", JSON.stringify({ 'deliveryType': delivery_type, 'pointUUID': data.uuid, "deliveryText": data.restaurant_address}));
         }

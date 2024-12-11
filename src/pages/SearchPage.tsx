@@ -1,19 +1,18 @@
 import '@styles/pages/SearchPage.scss';
 import { kladrGet } from "@api/kladrGet"
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import useSWR from 'swr';
 import getSvg from '@images/svg'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import InputCard from '@components/cards/InputCard'
 import useCity from '@scripts/custom_hooks/useCity';
 import { CAddressState } from '@myModels/pages/MAddAddress';
-import { ISearchPageSingleQuerryEl, ISearchPageQuerry } from '@myModels/pages/MSearchPage';
+import { ISearchPageSingleQuerryEl, ISearchPageQuerry, ISearchPage } from '@myModels/pages/MSearchPage';
+import { DialogPanel } from '@headlessui/react'
 
-function SearchPage() {
-  const { type } = useParams();
+function SearchPage({ type, isOpen }: ISearchPage ) {
   const { cityData } = useCity();
   const [searchItem, setSearchItem] = useState('');
-  const navigate = useNavigate();
   const location = useLocation();
   
   const addressState = new CAddressState(location.state || "");
@@ -26,14 +25,14 @@ function SearchPage() {
       : searchItem && type === "house"
         ? `query=${searchItem}&streetId=${addressState.selectedStreetId}&contentType=building&limit=10`
         : null,
-    kladrGet
+        (url: string) => kladrGet(url) as Promise<ISearchPageQuerry> 
   );
 
   const handleSave = (element: ISearchPageSingleQuerryEl) => {
-    console.log(element)
-    let newState = { ...location.state };
+    console.log(querryData)
+    let newState;
     if (type === "street") {
-      //console.log(newState)
+      newState = new CAddressState()
       newState = {
         ...newState,
         selectedStreetName: `${element.typeShort}. ${element.name}`,
@@ -42,14 +41,17 @@ function SearchPage() {
     }
 
     if (type === "house") {
-      //console.log(newState)
+      newState = { ...location.state };
       newState = {
         ...newState,
         selectedHouseName: `${element.typeShort}. ${element.name}`,
+        selectedStreetShortName: element.name,
         selectedHouseId: element.id,
       };
+      
     }
-    navigate("/profile/addresses/add", { state: newState });
+    location.state = newState;
+    isOpen(false);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,13 +59,12 @@ function SearchPage() {
   };
 
   return (
-    <>
-      <main className="search-page search-page_props">
+      <DialogPanel className="search-page search-page_props">
         <section className="search-page__content block-normalizer f-column">
           <form className="search-page__form f-row gap-16">
             <button
               className="search-page__header-button simple-button"
-              onClick={() => navigate("/profile/addresses/add")}
+              onClick={() => isOpen(false)}
             >
               {arrow("var(--white)")}
             </button>
@@ -88,8 +89,7 @@ function SearchPage() {
             ))}
           </div>
         </section>
-      </main>
-    </>
+      </DialogPanel>
   );
 }
 

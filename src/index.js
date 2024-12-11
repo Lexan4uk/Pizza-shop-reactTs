@@ -80,7 +80,6 @@ root.render(
               <Route path="/profile/edit" element={<EditProfile />} />
               <Route path="/profile/addresses" element={<Addresses />} />
               <Route path="/profile/addresses/add" element={<AddAddress />} />
-              <Route path="/profile/addresses/add/:type" element={<SearchPage />} />
             </Routes>
           </InitCity>
         </Router>

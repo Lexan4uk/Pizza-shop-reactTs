@@ -6,13 +6,12 @@ export const api = create({
   headers: { Accept: "application/json" },
 })
 api.addRequestTransform(request => {
-  const token = localStorage.getItem('token', false);
-  if (token) {
+  const token = localStorage.getItem('token');
+  if (token && request.headers) {
     request.headers['Authorization'] = `Bearer ${token}`
   } 
 })
 export const kladrapi = create({
   baseURL: 'https://kladr-api.ru/',
-  headers: { Accept: "application/json", mode: "no-cors" },
-   mode: "no-cors"
+  headers: { Accept: "application/json"}
 })

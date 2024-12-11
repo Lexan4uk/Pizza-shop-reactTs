@@ -128,7 +128,7 @@ function Main() {
           </nav>
         </div>
         {sortedGoods?.map((item) => (
-          <MainCard data={item} key={item.name} />
+          <MainCard key={item.name} item={item}  />
         ))}
       </main>
       <Footer active={1} />

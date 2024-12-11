@@ -16,7 +16,8 @@ function InputCard({
     setValue = "",
     setOnChange = undefined,
     setIcon = undefined,
-    additionClass = ""
+    additionClass = "",
+    maxlength = 100
 }: Partial<IInputCard>) {
 
     const cardData = new CInputCard({
@@ -31,7 +32,8 @@ function InputCard({
         setValue,
         setOnChange,
         setIcon,
-        additionClass
+        additionClass,
+        maxlength
     });
 
     const formContext = useFormContext();
@@ -80,6 +82,7 @@ function InputCard({
                 <div className="inputcard__main-box f-column gap-4">
                     <div className={`inputcard__input-border`}>
                         <input
+                            maxLength={cardData.maxlength}
                             type={cardData.inputType}
                             className="inputcard__input"
                             placeholder={cardData.setPlaceholder}
@@ -96,6 +99,7 @@ function InputCard({
                 <div className={`inputcard__main-box f-column gap-4 ${cardData.additionClass}`}>
                     <div className={`inputcard__input-border`}>
                         <input
+                            maxLength={cardData.maxlength}
                             {...register(cardData.dataName, cardData.validationRules)}
                             type={cardData.inputType}
                             className="inputcard__input"
@@ -111,6 +115,7 @@ function InputCard({
                 <div className={`inputcard__main-box f-column gap-4 ${cardData.additionClass}`}>
                     <div className={`inputcard__input-border`}>
                         <textarea
+                            maxLength={cardData.maxlength}
                             {...register(cardData.dataName, cardData.validationRules)}
                             className="inputcard__input inputcard__input-textarea text-m"
                             placeholder={cardData.setPlaceholder}

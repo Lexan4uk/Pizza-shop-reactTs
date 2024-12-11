@@ -19,14 +19,6 @@ function Addresses() {
         orderTypeTuple[0] = orderTypes.items.find(item => item.name.toLowerCase().includes("самовывоз"));
         orderTypeTuple[1] = orderTypes.items.find(item => item.name.toLowerCase().includes("курьером"));
     }
-    useEffect(() => {
-        const deliveryData = localStorage.getItem("deliveryData");
-        if (deliveryData) {
-            const { deliveryText } = JSON.parse(deliveryData);
-            
-        }
-    }, []);
-
 
     const navigate = useNavigate();
     const {
@@ -41,7 +33,7 @@ function Addresses() {
             <main className="addresses">
                 <header className="addresses__header">
                     <div className="header__holder block-normalizer f-row">
-                        <button className="addresses__header-arrow simple-button" onClick={() => navigate("/profile")}>{arrow()}</button>
+                        <button className="addresses__header-arrow simple-button" onClick={() => navigate("/")}>{arrow()}</button>
                         <h1 className="addresses__header-title title-xs">Адреса {activeDelivery === "Самовывоз" ? "самовывоза" : "доставки"}</h1>
                     </div>
                 </header>

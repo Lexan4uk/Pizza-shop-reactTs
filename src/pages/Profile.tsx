@@ -22,7 +22,6 @@ function Profile() {
         accData,
         isAuthorised
     } = useAuth()
-    console.log(accData)
 
     const exitClick = () => {
         localStorage.removeItem('token');
@@ -51,7 +50,7 @@ function Profile() {
                             <div className="profile__user-block-bottom bg-yellow">
                                 <div className="profile__bonuses-holder f-column gap-4">
                                     <div className="profile__bonuses f-row gap-4">
-                                        <span className="profile__bonuses-count title-l text-black">{accData.wallets && accData.wallets[0].balance}</span>
+                                        <span className="profile__bonuses-count title-l text-black">{accData.wallets && accData.wallets[0]?.balance}</span>
                                         <span className="profile__bonuses-text title-s text-black">NINJA-БОНУСОВ</span>
                                     </div>
                                     <a href="/" className="profile__bonuses-link link-s text-black">что такое ninja-бонусы</a>

@@ -4,7 +4,6 @@ import { login } from "@api/login"
 import { accDataAtom } from '@scripts/atoms/accDataAtom'
 import { isFooterLoaded as footerAtom } from '@scripts/atoms/isFooterLoaded';
 
-
 function useAuth() {
   const [isAuthorised, setIsAuthorised] = useRecoilState(isAuthorisedState);
   const [accData, setAccData] = useRecoilState(accDataAtom)

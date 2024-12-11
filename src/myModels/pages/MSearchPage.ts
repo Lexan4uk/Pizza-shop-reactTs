@@ -1,3 +1,7 @@
+export interface ISearchPage {
+    type: string;
+    isOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
 export interface ISearchPageQuerry {
     result: ISearchPageSingleQuerryEl[]
     searchContext: ISearchContext

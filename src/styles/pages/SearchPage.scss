@@ -1,4 +1,9 @@
 .search-page {
+    &_props {
+        background: var(--black);
+        width: 360px;
+        height: 100vh;
+    }
     &__form {
         padding-top: 16px;
     }

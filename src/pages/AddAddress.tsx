@@ -7,41 +7,46 @@ import { useForm, FormProvider, useFormContext } from "react-hook-form";
 import InputCard from '@components/cards/InputCard'
 import useCity from '@scripts/custom_hooks/useCity';
 import { useEffect, useState } from 'react';
-import { IAddressState, CAddressState } from '@myModels/pages/MAddAddress';
-
+import { CAddressState, IFormData, IAddAddressData } from '@myModels/pages/MAddAddress';
+import { Dialog } from '@headlessui/react'
+import SearchPage from '@pages/SearchPage';
+import {simplePost, apiTags} from '@api/simplePost';
+import { ISimplePost } from '@myModels/api/MSimplePost';
 
 function AddAddress() {
+    const [openStreetWindow, setOpenStreetWindow] = useState(false)
+    const [openHouseWindow, setOpenHouseWindow] = useState(false)
+
+    const [street, setStreet] = useState<string>();
+    const [house, setHouse] = useState<string>();
+
+    const [querry, setQuerry] = useState(false)
+
     const {
         arrow
     } = getSvg()
     const {
         cityData
     } = useCity()
+
     const location = useLocation();
     const navigate = useNavigate();
     const methods = useForm();
-    const { handleSubmit, trigger, formState: { errors }, register } = methods;
+    const { handleSubmit, trigger } = methods;
 
     const [addressState, setAddressState] = useState<CAddressState>();
 
     useEffect(() => {
         const initialData = new CAddressState(location.state || "");
         setAddressState(initialData);
-        //console.log(location.state)
     }, [location.state]);
-    const [street, setStreet] = useState<string>();
-    const [house, setHouse] = useState<string>();
 
     useEffect(() => {
-        console.log(addressState)
         if (addressState) {
-            setStreet(addressState.selectedStreetId);
+            setStreet(addressState.selectedStreetName);
             setHouse(addressState.selectedHouseName);
         }
     }, [addressState]);
-    useEffect(() => {
-        //console.log(house)
-    }, [house])
 
 
 
@@ -53,7 +58,18 @@ function AddAddress() {
     };
 
     const onSubmit = async (data: any) => {
-        console.log(data)
+        setQuerry(true)
+        const querryData: IAddAddressData = {
+            ...data,
+            house: location.state.selectedHouseId,
+            street: location.state.selectedStreetId,
+            latitude: 0,
+            longitude: 0,
+            zipIndex: ""
+        };
+        const response = await simplePost({path: apiTags.add_delivery_point, data: querryData} as ISimplePost);
+        console.log(response)
+        setQuerry(false)
     }
 
     return (
@@ -78,52 +94,57 @@ function AddAddress() {
                                 <h2 className="add-address__input-article text-m">Улица</h2>
                                 <div className={`inputcard__main-box f-column gap-4`}>
                                     <div className={`inputcard__input-border`}>
-                                        <input defaultValue={street} className="inputcard__input" placeholder="Улица" onClick={() => navigate("street")} />
+                                        <input defaultValue={street} className="inputcard__input" placeholder="Улица" onClick={() => setOpenStreetWindow(true)} />
                                     </div>
                                 </div>
+                                <Dialog open={openStreetWindow} onClose={() => setOpenStreetWindow(false)} className="add-address__input-dialog">
+                                    <SearchPage type={"street"} isOpen={setOpenStreetWindow} />
+                                </Dialog>
                             </div>
                             <div className="add-address__input-holder-grid gap-16">
                                 <div className={`add-address__input-holder f-column gap-4 ${street ? "" : "add-address__input-inactive"}`}>
                                     <h2 className="add-address__input-article text-m">Дом</h2>
                                     <div className={`inputcard__main-box f-column gap-4`}>
                                         <div className={`inputcard__input-border`}>
-                                            <input defaultValue={house} className="inputcard__input" placeholder="Дом" onClick={() => navigate("house", {
-                                                state: {
-                                                    selectedStreetId: addressState?.selectedStreetId || '',
-                                                }
-                                            })} />
+                                            <input defaultValue={house} className="inputcard__input" placeholder="Дом" onClick={() => setOpenHouseWindow(true)} />
                                         </div>
                                     </div>
+                                    <Dialog open={openHouseWindow} onClose={() => setOpenHouseWindow(false)} className="add-address__input-dialog">
+                                        <SearchPage type={"house"} isOpen={setOpenHouseWindow} />
+                                    </Dialog>
                                 </div>
                                 <div className={`add-address__input-holder f-column gap-4 add-address__optional-input ${!house && "add-address__input-inactive"}`}>
                                     <h2 className="add-address__input-article text-m">Квартира</h2>
-                                    <InputCard dataName="flat" type="AddAddressInput" setPlaceholder="Квартира" />
+                                    <InputCard dataName="flat" type="AddAddressInput" setPlaceholder="Квартира" inputType="number" />
                                 </div>
                                 <div className={`add-address__input-holder f-column gap-4 add-address__optional-input ${!house && "add-address__input-inactive"}`}>
                                     <h2 className="add-address__input-article text-m">Подъезд</h2>
-                                    <InputCard dataName="entrance" type="AddAddressInput" setPlaceholder="Подъезд" />
+                                    <InputCard dataName="entrance" type="AddAddressInput" setPlaceholder="Подъезд"  inputType="number" />
                                 </div>
                                 <div className={`add-address__input-holder f-column gap-4 add-address__optional-input ${!house && "add-address__input-inactive"}`}>
                                     <h2 className="add-address__input-article text-m">Этаж</h2>
-                                    <InputCard dataName="floor" type="AddAddressInput" setPlaceholder="Этаж" />
+                                    <InputCard dataName="floor" type="AddAddressInput" setPlaceholder="Этаж" inputType="number"/>
                                 </div>
                             </div>
                             <div className={`add-address__input-holder f-column gap-4 add-address__optional-input ${!house && "add-address__input-inactive"}`}>
                                 <h2 className="add-address__input-article text-m">Код домофора</h2>
-                                <InputCard dataName="doorphone" type="AddAddressInput" setPlaceholder="Код домофона" />
+                                <InputCard dataName="doorphone" type="AddAddressInput" setPlaceholder="Код домофона" inputType="number"/>
                             </div>
                             <div className={`add-address__input-holder f-column gap-4 add-address__optional-input ${!house && "add-address__input-inactive"}`}>
                                 <h2 className="add-address__input-article text-m">Комментарии</h2>
-                                <InputCard dataName="comment" type="AddAddressTextArea" setPlaceholder="Комментарии об адресе доставки" />
+                                <InputCard dataName="comment" type="AddAddressTextArea" setPlaceholder="Комментарии об адресе доставки" maxlength={200}/>
                             </div>
                         </form>
                     </FormProvider>
                 </section>
-                <footer className="add-address footer_props search__footer">
-                    <nav className="footer__nav">
-                        <button className={`footer__auth-btn button-l`} onClick={handleSaveClick}>Сохранить</button>
-                    </nav>
-                </footer>
+                {!(openStreetWindow || openHouseWindow) && (
+                    <footer className="add-address footer_props search__footer">
+                        <nav className="footer__nav">
+                            <button className={`footer__auth-btn button-l ${(!house || querry) && "button-inactive"}`} onClick={handleSaveClick}>Сохранить</button>
+                        </nav>
+                    </footer>
+                )}
+
             </main>
 
         </>

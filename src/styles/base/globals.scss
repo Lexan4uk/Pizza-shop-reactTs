@@ -148,6 +148,12 @@ main {
 .text-black {
   color: var(--black)
 }
+.button-inactive {
+    background: var(--gray-text-inactive) !important;
+    color: var(--white) !important;
+    pointer-events: none;
+    opacity: 0.8;
+}
 
 
 .button-s {
