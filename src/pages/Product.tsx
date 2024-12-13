@@ -9,29 +9,24 @@ import ProductAdditionsCard from '@components/cards/ProductAdditionsCard'
 import {
     IProduct, IProductModifier, IModifier, INormalizedProduct,
     CNormalizedProduct
-  } from '@myModels/pages/MProduct';
-  import { BaseApiResponseType } from '@myModels/api/BaseApiTypes';
-
-
+} from '@myModels/pages/MProduct';
+import { BaseApiResponseType } from '@myModels/api/BaseApiTypes';
+import { basketEdit } from '@scripts/helpers/basket.api';
+import { IBasketEdit, IBasketModifiersEdit } from '@myModels/pages/MBasket';
 
 function Product() {
     const { id } = useParams();
-    const { data: product, error, isLoading: pIsLoading } = useSWR<BaseApiResponseType & {items: IProduct[]}>(apiTags.productById(id), simpleGet);
+    const { data: product, error, isLoading: pIsLoading } = useSWR<BaseApiResponseType & { items: IProduct[] }>(apiTags.productById(id), simpleGet);
     const [selectedProduct, setSelectedProduct] = useState<INormalizedProduct>(new CNormalizedProduct);
-    const [selectedThickness, setSelectedThickness] = useState('thin');
-    const [selectedIdBySize, setSelectedIdBySize] = useState<string>();
+    const [selectedThickness, setSelectedThickness] = useState<string>('thin');
+    const [selectedIdBySize, setSelectedIdBySize] = useState<string>("");
 
-    const [currentPrice, setCurrentPrice] = useState(1)
-    const [productCount, setProductCount] = useState(1);
+    const [currentPrice, setCurrentPrice] = useState<number>(1)
+    const [productCount, setProductCount] = useState<number>(1);
     const [price, setPrice] = useState<number>();
 
     const [addition, updateAddition] = useState<IModifier[]>([]);
     const [normalizedProducts, setNormalizedProducts] = useState<INormalizedProduct[]>([new CNormalizedProduct()]);
-
-    
-    useEffect(() => {
-        console.log(addition)
-    }, [addition])
 
     useEffect(() => {
         if (product && !pIsLoading) {
@@ -42,7 +37,7 @@ function Product() {
             setCurrentPrice(firstProduct.min_price);
         }
     }, [product, pIsLoading]);
-    
+
 
     useEffect(() => {
         const totalAdditionPrice = Object.values(addition).reduce((acc, item) => {
@@ -51,14 +46,27 @@ function Product() {
 
         setPrice((currentPrice + totalAdditionPrice) * productCount);
     }, [currentPrice, productCount, addition]);
-        
+
     const {
         mini_plus,
         mini_minus,
         cross,
         info
     } = getSvg();
-    
+
+    async function addToCart() {
+        const mods: IBasketModifiersEdit[] = addition.map((item) => ({
+            productModifier: item.id,
+            amount: 1
+        }));
+        const querryData: IBasketEdit[] = [{
+            products: selectedIdBySize,
+            amount: productCount,
+            cartModifiers: mods
+        }]
+        const responce = await basketEdit(querryData)
+        console.log(responce)
+    }
     return (
         <>
             <main className="product product_props block-normalizer f-column">
@@ -90,9 +98,9 @@ function Product() {
                             <div className="product__options">
                                 <h2 className="product__option-article text-yellow text-m">Дополнительные добавки</h2>
                                 <div className="product__additions-holder">
-                                    {selectedProduct.product_modifiers.map((addition : IProductModifier) => (
-                                        
-                                        <ProductAdditionsCard key={addition.id} addition={addition} updateAddition={updateAddition}/>
+                                    {selectedProduct.product_modifiers.map((addition: IProductModifier) => (
+
+                                        <ProductAdditionsCard key={addition.id} addition={addition} updateAddition={updateAddition} />
                                     ))}
                                 </div>
                             </div>
@@ -107,7 +115,7 @@ function Product() {
                         <input className="product__footer-counter text-l" readOnly value={productCount} type="number" />
                         <button className="product__footer-counter-btn button" onClick={() => productCount < 99 && setProductCount(productCount + 1)}>{mini_plus()}</button>
                     </div>
-                    <button className="product__footer-cart-add button-l button">В корзину за {price}Р</button>
+                    <button className="product__footer-cart-add button-l button" onClick={addToCart}>В корзину за {price}Р</button>
                 </div>
             </footer>
         </>

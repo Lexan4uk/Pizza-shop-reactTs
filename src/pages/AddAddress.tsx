@@ -68,8 +68,9 @@ function AddAddress() {
             zipIndex: ""
         };
         const response = await simplePost({path: apiTags.add_delivery_point, data: querryData} as ISimplePost);
-        console.log(response)
         setQuerry(false)
+        navigate(-1)
+
     }
 
     return (

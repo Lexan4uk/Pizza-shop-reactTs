@@ -3,7 +3,6 @@ import Header from '@components/Header';
 import Footer from '@components/Footer';
 import MainCard from '@components/cards/MainCard'
 import useSWR from 'swr';
-
 import { useState, useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -52,6 +51,7 @@ function Main() {
     search,
     pen
   } = getSvg()
+
   useEffect(() => {
     const deliveryData = localStorage.getItem("deliveryData");
     if (deliveryData) {
@@ -85,10 +85,10 @@ function Main() {
           {delivery ? (
             <>
               <h2 className="main-catalog__delivery-title title-l">Доставим по адресу</h2>
-              <div className="main-catalog__delivery-buttons-holder f-row gap-4">
-                <button className='main-catalog__delivery-text hlink-l text-yellow simple-button'>{delivery}</button>
-                <Link to="profile/addresses" className='main-catalog__delivery-pan'>{pen()}</Link>
-              </div>
+              <Link to="profile/addresses" className="main-catalog__delivery-buttons-holder f-row gap-4">
+                <button className='main-catalog__delivery-text hlink-l text-yellow simple-button text-underline'>{delivery}</button>
+                {pen()}
+              </Link>
             </>) : (
             <Link className="main-catalog__add-adress hlink-l text-yellow" to="profile/addresses">Добавить адрес получения</Link>
           )}
@@ -128,7 +128,7 @@ function Main() {
           </nav>
         </div>
         {sortedGoods?.map((item) => (
-          <MainCard key={item.name} item={item}  />
+          <MainCard key={item.name} item={item} />
         ))}
       </main>
       <Footer active={1} />

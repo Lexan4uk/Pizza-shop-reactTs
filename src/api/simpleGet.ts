@@ -10,7 +10,8 @@ export const apiTags = {
     city: "delivery/city/filter_city",
     deliver_points: "delivery/delivery_point/get",
     pickup_points: () =>  `organizations/city/${getCityId()}`,
-    order_types: "order_types"
+    order_types: "order_types",
+    cart: "cart"
 };
 
 const getCityId = (): string => {

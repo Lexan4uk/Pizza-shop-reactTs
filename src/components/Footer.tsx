@@ -31,7 +31,7 @@ function Footer({ active }: IFooter) {
                             {option({ href: "/profile", icon: person(), text: "Профиль", active: active === 2 })}
                             {option({ href: "/actions"  , icon: ticket(), text: "Акции", active: active === 3 })}
                             {option({ href: "/", icon: pin(), text: "Контакты", active: active === 4 })}
-                            {option({ href: "/", icon: cart(), text: "Корзина", active: active === 5 })}
+                            {option({ href: "/basket", icon: cart(), text: "Корзина", active: active === 5 })}
                         </ul>)}
                 </nav>
             </footer>

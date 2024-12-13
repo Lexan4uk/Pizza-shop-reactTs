@@ -6,10 +6,13 @@ export const apiTags = {
     phone_enter: "user/login",
     get_token: "authentication_token",
     edit_user: "user/profile",
+    userDeliveryParameters: "user/delivery_parameters",
     userSetPickUpPoint: (id: string) => `user/attach/organization/${id}`,
     userSetDeliveryPoint: (id: number) => `user/attach/current_delivery_point/${id}`,
     userSetDeliveryType: (val: string) => `user/attach/current_order_type/${val}`,
-    add_delivery_point: "delivery/delivery_point/add"
+    add_delivery_point: "delivery/delivery_point/add",
+    edit_cart: "cart",
+    calculate_cart: "cart/calculate"
 };
 
 export async function simplePost<T = BaseApiResponseType>({path, data}: ISimplePost) {

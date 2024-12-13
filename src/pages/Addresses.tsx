@@ -8,13 +8,20 @@ import PickupComp from '@components/addresses_elements/PickupComp';
 import { simpleGet, apiTags } from "@api/simpleGet"
 import useSWR from 'swr';
 import { BaseApiResponseType } from '@myModels/api/BaseApiTypes';
-import { IDeliveryTypes } from '@myModels/pages/MAdresses';
+import { IDeliveryTypes, IDeliveryLocalData } from '@myModels/pages/MAdresses';
 
 function Addresses() {
     const [activeDelivery, setActiveDelivery] = useState("Самовывоз");
+    useEffect(() => {
+        const deliveryData = localStorage.getItem('deliveryData');
+        if (deliveryData) {
+            const parsedData: IDeliveryLocalData = JSON.parse(deliveryData);
+            if (parsedData.deliveryType === "DeliveryByCourier")
+                setActiveDelivery("Доставка")
+        }
+    }, []);
     const { data: orderTypes, isLoading: otIsLoading } = useSWR<BaseApiResponseType & { items: IDeliveryTypes[] }>(apiTags.order_types, simpleGet);
     const orderTypeTuple: [IDeliveryTypes | undefined, IDeliveryTypes | undefined] = [undefined, undefined];
-
     if (orderTypes?.items) {
         orderTypeTuple[0] = orderTypes.items.find(item => item.name.toLowerCase().includes("самовывоз"));
         orderTypeTuple[1] = orderTypes.items.find(item => item.name.toLowerCase().includes("курьером"));
@@ -49,7 +56,7 @@ function Addresses() {
                     {orderTypeTuple[0] && orderTypeTuple[1] && (
                         activeDelivery === "Самовывоз"
                             ? (<PickupComp delivery_type={orderTypeTuple[0].order_service_type} delivery_id={orderTypeTuple[0].id} />)
-                            : (<DeliveryComp delivery_type={orderTypeTuple[1].order_service_type} delivery_id={orderTypeTuple[1].id}/>)
+                            : (<DeliveryComp delivery_type={orderTypeTuple[1].order_service_type} delivery_id={orderTypeTuple[1].id} />)
                     )}
                 </section>
                 {activeDelivery === "Доставка" && (

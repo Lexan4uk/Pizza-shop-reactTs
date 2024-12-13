@@ -68,3 +68,15 @@ export interface IAddressComp {
     delivery_id: string;
 }
 
+export interface IDeliveryParameters {
+    city: string;
+    orderType: string;
+    organization?: string;
+    currentDeliveryPoint?: string;
+  }
+export interface IDeliveryLocalData {
+    deliveryType: 'DeliveryPickUp' | "DeliveryByCourier";
+    pointUUID: string;
+    deliveryText: string;
+  }
+  

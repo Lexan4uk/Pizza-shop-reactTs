@@ -7,19 +7,21 @@ import {
  } from '@myModels/components/cards/MSizesCard'
   
 const SizesCard = ({ data , selectedThickness, setSelectedIdBySize, selectedIdBySize, setCurrentPrice } : ISizesCard) => {
-    const options = useMemo(() => data.reduce((acc: { [key: string]: IOptions[] }, sortItem: INormalizedProduct) => {
-        const { thickness, size, id, min_price } = sortItem;
-
-        if (!acc[thickness]) {
-            acc[thickness] = [];
-        }
-
-        if (!acc[thickness].some(item => item.size === size)) {
-            acc[thickness].push({ thickness, size, id, min_price });
-        }
-
-        return acc;
-    }, {}), [data]);
+    const options = useMemo(() => 
+        data.reduce((acc: { [key: string]: IOptions[] }, sortItem: INormalizedProduct) => {
+            const { thickness, size, id, min_price } = sortItem;
+    
+            if (!acc[thickness]) {
+                acc[thickness] = [];
+            }
+    
+            if (!acc[thickness]?.some(item => item.size === size)) {
+                acc[thickness]?.push({ thickness, size, id, min_price });
+            }
+    
+            return acc;
+        }, {}), [data]);
+    
     const availableSizes = options[selectedThickness] || [new COptions()]
     useEffect(() => {
         setSelectedIdBySize(availableSizes[0]!.id);

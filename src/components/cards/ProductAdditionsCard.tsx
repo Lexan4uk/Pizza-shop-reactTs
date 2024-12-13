@@ -9,7 +9,6 @@ import {
 
 const ProductAdditionsCard = ({ addition, updateAddition }: IProductAdditionsCard) => {
     const normalizedAddition = addition.product;
-    console.log(addition)
     const {
         mini_plus,
         mini_minus,

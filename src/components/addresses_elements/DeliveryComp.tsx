@@ -2,17 +2,22 @@ import '@styles/pages/Addresses.scss';
 import { BaseApiResponseType } from '@myModels/api/BaseApiTypes';
 import { simpleGet, apiTags } from "@api/simpleGet"
 import useSWR from 'swr';
-import { IAddressComp, IDeliveryAddress } from '@myModels/pages/MAdresses';
+import { IAddressComp, IDeliveryAddress, IDeliveryParameters } from '@myModels/pages/MAdresses';
 import { useEffect, useState } from 'react';
 import getSvg from '@images/svg'
 import { simplePost, apiTags as postTags } from "@api/simplePost"
 import { ISimplePost } from "@myModels/api/MSimplePost";
+import useCity from '@scripts/custom_hooks/useCity';
 
 const DeliveryComp = ({ delivery_type, delivery_id }: IAddressComp) => {
     const { data: addresses, error: adError, isLoading: adIsLoading } = useSWR<BaseApiResponseType & { items: IDeliveryAddress[] }>(apiTags.deliver_points, simpleGet);
 
     const [activeAddress, setActiveAddress] = useState<number>();
     const [savePossible, setSavePossible] = useState(false);
+
+    const {
+        cityData
+    } = useCity()
 
     useEffect(() => {
         const deliveryData = localStorage.getItem("deliveryData");
@@ -31,23 +36,20 @@ const DeliveryComp = ({ delivery_type, delivery_id }: IAddressComp) => {
     };
     const handleSaveClick = async (data: IDeliveryAddress) => {
         setSavePossible(false)
-        const setDeliveryType = await simplePost({
-            path: postTags.userSetDeliveryType(delivery_id),
+        const deliveryParameters = await simplePost({
+            path: postTags.userDeliveryParameters,
             data: {
-                currentDeliveryPoint: delivery_id,
-                currentOrderType: delivery_type
+                city: cityData.cityId,
+                orderType: delivery_id,
+                currentDeliveryPoint: data.id.toString()
             }
-        } as ISimplePost);
-
-        const setDeliveryPoint = await simplePost({
-            path: postTags.userSetDeliveryPoint(data.id),
-            data: data.id,
-        } as ISimplePost)
-        if (setDeliveryType?.code == 200 && setDeliveryPoint?.code == 200) {
-            localStorage.setItem("deliveryData", JSON.stringify({ 'deliveryType': delivery_type, 'pointUUID': data.id, "deliveryText": `${data.street.city.name}, ${data.street.name}, ${data.house}`}));
+        } as ISimplePost<IDeliveryParameters>);
+        
+        if (deliveryParameters?.code == 200) {
+            localStorage.setItem("deliveryData", JSON.stringify({ 'deliveryType': delivery_type, 'pointUUID': data.id, "deliveryText": `${data.street.city.name}, ${data.street.name}, ${data.house}` }));
         }
         else {
-            console.log(`Ошибка запроса. setDeliveryType: ${setDeliveryType}\nsetDeliveryPoint: ${setDeliveryPoint}`)
+            console.log(`Ошибка запроса. deliveryParameters: ${JSON.stringify(deliveryParameters)}`)
         }
 
 

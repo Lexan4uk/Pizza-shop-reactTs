@@ -3,7 +3,7 @@ import { simpleGet, apiTags as getTags } from "@api/simpleGet"
 import useSWR from 'swr';
 import { BaseApiResponseType } from '@myModels/api/BaseApiTypes';
 import {
-    IPickupAddress, IAddressComp,
+    IPickupAddress, IAddressComp, IDeliveryParameters,
     CPickupAddress
 } from '@myModels/pages/MAdresses';
 import { IOption } from '@myModels/pages/MMain';
@@ -11,7 +11,7 @@ import { useState, useEffect } from 'react';
 import getSvg from '@images/svg'
 import { simplePost, apiTags as postTags } from "@api/simplePost"
 import { ISimplePost } from "@myModels/api/MSimplePost";
-
+import useCity from '@scripts/custom_hooks/useCity';
 
 const PickupComp = ({ delivery_type, delivery_id }: IAddressComp) => {
 
@@ -22,6 +22,10 @@ const PickupComp = ({ delivery_type, delivery_id }: IAddressComp) => {
     }
     const [activeAddress, setActiveAddress] = useState<string>();
     const [savePossible, setSavePossible] = useState(false);
+
+    const {
+        cityData
+    } = useCity()
 
     useEffect(() => {
         const deliveryData = localStorage.getItem("deliveryData");
@@ -40,24 +44,20 @@ const PickupComp = ({ delivery_type, delivery_id }: IAddressComp) => {
     };
     const handleSaveClick = async (data: IPickupAddress) => {
         setSavePossible(false)
-        const setDeliveryType = await simplePost({
-            path: postTags.userSetDeliveryType(delivery_id),
+        const deliveryParameters = await simplePost({
+            path: postTags.userDeliveryParameters,
             data: {
-                currentDeliveryPoint: delivery_id,
-                currentOrderType: delivery_type
+                city: cityData.cityId,
+                orderType: delivery_id,
+                organization: data.uuid
             }
-        } as ISimplePost);
+        } as ISimplePost<IDeliveryParameters>);
 
-        const setPickUpPoint = await simplePost({
-            path: postTags.userSetPickUpPoint(data.uuid),
-            data: data.uuid,
-        } as ISimplePost)
-        
-        if (setDeliveryType?.code == 200 && setPickUpPoint?.code == 200) {
-            localStorage.setItem("deliveryData", JSON.stringify({ 'deliveryType': delivery_type, 'pointUUID': data.uuid, "deliveryText": data.restaurant_address}));
+        if (deliveryParameters?.code == 200) {
+            localStorage.setItem("deliveryData", JSON.stringify({ 'deliveryType': delivery_type, 'pointUUID': data.uuid, "deliveryText": data.restaurant_address }));
         }
         else {
-            console.log(`Ошибка запроса. setDeliveryType: ${setDeliveryType}\nsetPickUpPoint: ${setPickUpPoint}`)
+            console.log(`Ошибка запроса. deliveryParameters: ${JSON.stringify(deliveryParameters)}`)
         }
 
 
