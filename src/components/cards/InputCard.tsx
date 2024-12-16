@@ -4,7 +4,7 @@ import { useFormContext, FieldError } from "react-hook-form";
 import { useState } from "react";
 import { IInputCard, CInputCard } from '@myModels/components/cards/MInputCard';
 
-function InputCard({
+const InputCard = ({
     type = "Input",
     dataName = "",
     mask = "",
@@ -18,7 +18,7 @@ function InputCard({
     setIcon = undefined,
     additionClass = "",
     maxlength = 100
-}: Partial<IInputCard>) {
+}: Partial<IInputCard>) => {
 
     const cardData = new CInputCard({
         type,

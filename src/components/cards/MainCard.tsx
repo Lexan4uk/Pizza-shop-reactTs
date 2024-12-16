@@ -3,7 +3,7 @@ import getSvg from '@images/svg'
 import ProductCard from '@components/cards/ProductCard';
 import { IGroupedOption } from '@myModels/pages/MMain';
 
-function MainCard( {item} : {item: IGroupedOption}) {
+const MainCard = ( {item} : {item: IGroupedOption}) => {
     const {
         arrow_line
     } = getSvg()

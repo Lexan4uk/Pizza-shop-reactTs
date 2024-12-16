@@ -1,11 +1,11 @@
 import '@styles/pages/Product.scss';
 import getSvg from '@images/svg';
 import { useState } from 'react';
-import { 
+import {
     IProductAdditionsCard
- } from '@myModels/components/cards/MProductAdditionsCard'
- import { IProductModifier, IModifier } from '@myModels/pages/MProduct';
- 
+} from '@myModels/components/cards/MProductAdditionsCard'
+import { IProductModifier, IModifier, IModdedModifier } from '@myModels/pages/MProduct';
+
 
 const ProductAdditionsCard = ({ addition, updateAddition }: IProductAdditionsCard) => {
     const normalizedAddition = addition.product;
@@ -20,24 +20,28 @@ const ProductAdditionsCard = ({ addition, updateAddition }: IProductAdditionsCar
         type = "checkbox"
 
     const handleAdd = () => {
-    setBtnActive(false);
-    updateAddition((prevAdditions: IModifier[]) => {
-        const exists = prevAdditions.some(item => item.id === normalizedAddition.id);
-        if (!exists) {
-            return [...prevAdditions, normalizedAddition];
-        }
-        return prevAdditions; 
-    });
-};
+        setBtnActive(false);
+        updateAddition((prevAdditions: IModdedModifier[]) => {
+            const exists = prevAdditions.some(item => item.id === normalizedAddition.id);
+            if (!exists) {
+                const newAddition = {
+                    ...normalizedAddition,
+                    addition_id: addition.id
+                }
+                return [...prevAdditions, newAddition];
+            }
+            return prevAdditions;
+        });
+    };
 
-const handleRemove = () => {
-    setBtnActive(true);
-    updateAddition((prevAdditions: IModifier[]) => {
-        return prevAdditions.filter(item => item.id !== normalizedAddition.id);
-    });
-};
+    const handleRemove = () => {
+        setBtnActive(true);
+        updateAddition((prevAdditions: IModdedModifier[]) => {
+            return prevAdditions.filter(item => item.id !== normalizedAddition.id);
+        });
+    };
 
-    
+
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
             handleAdd()

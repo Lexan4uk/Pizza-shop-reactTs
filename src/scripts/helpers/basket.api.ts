@@ -17,15 +17,20 @@ export interface IBasketCalculate {
   appliedCoupon: string;
 }
 
-export function useBasketList() {
-  const { data: basket, error: bError, isLoading: bIsLoading } = useSWR<BaseApiResponseType & { item: IBasket }>(getApiTags.cart, simpleGet);
+export async function basketList() {
+  const response = await api.get<BaseApiResponseType & { item: IBasket }>(getApiTags.cart);
 
-  if (bError) {
-    return { error: bError };
+  if (response.ok && response.data) {
+    if (response.data.code === 200) {
+      return response.data.item;
+    } else {
+      return response.data.message || "Неизвестная ошибка от API";
+    }
+  } else {
+    return response.problem || "Ошибка сети или сервера";
   }
-
-  return basket?.item;
 }
+
 export async function basketEdit(data: IBasketEdit[]) {
   const response = await simplePost({ path: postApiTags.edit_cart, data: { cartProducts: data } } as ISimplePost);
 
@@ -34,6 +39,7 @@ export async function basketEdit(data: IBasketEdit[]) {
       return response.payload
     }
     else {
+      console.log("Ошибка: " + response.message)
       return response.message
     }
   }

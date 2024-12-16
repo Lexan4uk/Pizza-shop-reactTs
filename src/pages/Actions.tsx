@@ -3,13 +3,13 @@ import { simpleGet, apiTags } from "@api/simpleGet"
 import Footer from '@components/Footer';
 import PromoCard  from '@components/cards/PromoCard';
 import useSWR from 'swr';
-import objectNormalizer from '@scripts/helpers/objectNormalizer';
-
+import { IPromotion, CPromotion } from '@myModels/pages/MMain';
+import { BaseApiResponseType } from '@myModels/api/BaseApiTypes';
 
 function Actions() {
-    const { data: promotions, error: pError, isLoading: pIsLoading } = useSWR(apiTags.promotions, simpleGet);
+    const { data: promotions, error: pError, isLoading: pIsLoading } = useSWR<BaseApiResponseType & { items: IPromotion[] }>(apiTags.promotions, simpleGet);
     const normalizedPromos = promotions?.items?.map((item) => {
-        return objectNormalizer(item, "actions")
+        return new CPromotion(item)
       })
     
     return (

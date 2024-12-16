@@ -1,0 +1,32 @@
+.basket {
+    &__section-title-holder {
+        margin: 12px 0px;
+        justify-content: space-between;
+        width: 100%;
+    }
+    &__prodcard {
+        width: 100%;
+        border-bottom: 1px solid var(--yellow);
+        border-left: 1px solid var(--yellow);
+        gap: 12px;
+        padding: 20px;
+        position: relative;
+    }
+    &__prodcard-img-holder {
+        height: 100px;
+        width: 100px;
+    }
+    &__prodcard-img {
+        height: 100%;
+        width: 100%;
+    }
+    &__prodcard-content {
+        gap: 20px;
+        flex: 1;
+    }
+    &__prodcard-delete {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+}

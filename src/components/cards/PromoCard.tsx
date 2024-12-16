@@ -1,15 +1,14 @@
 import '@styles/cards/PromoCard.scss';
 import getSvg from '@images/svg'
 import { Link } from "react-router-dom";
-  
+import { IPromoCard } from '@myModels/components/cards/MPromoCard';
 
 
-function PromoCard({ data }) {
+const PromoCard = ({ data }: IPromoCard) => {
     const {
         promocard_border,
         circle
     } = getSvg()
-    console.log(data)
     
     return (
 

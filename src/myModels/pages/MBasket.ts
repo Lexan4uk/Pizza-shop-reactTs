@@ -1,4 +1,4 @@
-import { IProductModifier } from "./MProduct";
+import { IProductModifier } from "@myModels/pages/MProduct"
 
 export interface IProduct {
     id: string;
@@ -10,7 +10,7 @@ export interface IProduct {
     additional_info: string;
     tags: string[];
     image_links: {
-        [key: string]: any; // Необходимо уточнить структуру image_links
+        [key: string]: any;
     };
 }
 
@@ -65,6 +65,29 @@ export interface IBasket {
     gift_cart_products: IGiftCartProduct[];
     deleted_cart_products: IDeletedCartProduct[];
 }
+export class CBacket implements IBasket {
+    user_phone: string;
+    price: number;
+    applied_coupon: string;
+    is_coupon_valid: boolean;
+    spend_bonuses: number;
+    bonuses_max_sum: number;
+    cart_products: ICartProduct[];
+    gift_cart_products: IGiftCartProduct[];
+    deleted_cart_products: IDeletedCartProduct[];
+
+    constructor(data: Partial<IBasket> = {}) {
+        this.user_phone = data.user_phone ?? "";
+        this.price = data.price ?? 0;
+        this.applied_coupon = data.applied_coupon ?? "";
+        this.is_coupon_valid = data.is_coupon_valid ?? false;
+        this.spend_bonuses = data.spend_bonuses ?? 0;
+        this.bonuses_max_sum = data.bonuses_max_sum ?? 0;
+        this.cart_products = data.cart_products ?? [];
+        this.gift_cart_products = data.gift_cart_products ?? [];
+        this.deleted_cart_products = data.deleted_cart_products ?? [];
+    }
+}
 
 export interface IBasketEdit {
     products: string;
@@ -73,6 +96,6 @@ export interface IBasketEdit {
 }
 
 export interface IBasketModifiersEdit {
-    productModifier: number | string;
+    productModifier: number;
     amount: number;
 }

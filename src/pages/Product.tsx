@@ -7,12 +7,13 @@ import getSvg from '@images/svg';
 import SizesCard from '@components/cards/SizesCard'
 import ProductAdditionsCard from '@components/cards/ProductAdditionsCard'
 import {
-    IProduct, IProductModifier, IModifier, INormalizedProduct,
+    IProduct, IProductModifier, IModifier, INormalizedProduct, IModdedModifier,
     CNormalizedProduct
 } from '@myModels/pages/MProduct';
 import { BaseApiResponseType } from '@myModels/api/BaseApiTypes';
-import { basketEdit } from '@scripts/helpers/basket.api';
-import { IBasketEdit, IBasketModifiersEdit } from '@myModels/pages/MBasket';
+import { basketEdit, basketList } from '@scripts/helpers/basket.api';
+import { IBasketEdit, IBasket, IBasketModifiersEdit } from '@myModels/pages/MBasket';
+import { object } from 'prop-types';
 
 function Product() {
     const { id } = useParams();
@@ -25,8 +26,10 @@ function Product() {
     const [productCount, setProductCount] = useState<number>(1);
     const [price, setPrice] = useState<number>();
 
-    const [addition, updateAddition] = useState<IModifier[]>([]);
+    const [addition, updateAddition] = useState<IModdedModifier[]>([]);
     const [normalizedProducts, setNormalizedProducts] = useState<INormalizedProduct[]>([new CNormalizedProduct()]);
+
+    const [isQuerry, setIsQuerry] = useState<boolean>(false)
 
     useEffect(() => {
         if (product && !pIsLoading) {
@@ -37,7 +40,6 @@ function Product() {
             setCurrentPrice(firstProduct.min_price);
         }
     }, [product, pIsLoading]);
-
 
     useEffect(() => {
         const totalAdditionPrice = Object.values(addition).reduce((acc, item) => {
@@ -55,17 +57,34 @@ function Product() {
     } = getSvg();
 
     async function addToCart() {
-        const mods: IBasketModifiersEdit[] = addition.map((item) => ({
-            productModifier: item.id,
-            amount: 1
-        }));
         const querryData: IBasketEdit[] = [{
             products: selectedIdBySize,
             amount: productCount,
-            cartModifiers: mods
-        }]
-        const responce = await basketEdit(querryData)
-        console.log(responce)
+            cartModifiers: addition.map((item) => ({
+                productModifier: item.addition_id,
+                amount: 1
+            }))
+        }];        
+        setIsQuerry(true)
+        
+        const getCart = await basketList()
+        if (typeof getCart === 'object') {
+            const oldData: IBasketEdit[] = getCart.cart_products.map((item) => ({
+                products: item.product.id,
+                amount: item.amount,
+                cartModifiers: item.cart_modifiers.map(modifier => ({
+                    productModifier: modifier.product_modifier.id,
+                    amount: modifier.amount
+                }))
+            }));
+            console.log(querryData)
+            const combinedData: IBasketEdit[] = oldData.concat(querryData);
+            const responce = await basketEdit(combinedData)
+        }
+        else {
+            const responce = await basketEdit(querryData)
+        }
+        setIsQuerry(false)
     }
     return (
         <>
@@ -115,7 +134,7 @@ function Product() {
                         <input className="product__footer-counter text-l" readOnly value={productCount} type="number" />
                         <button className="product__footer-counter-btn button" onClick={() => productCount < 99 && setProductCount(productCount + 1)}>{mini_plus()}</button>
                     </div>
-                    <button className="product__footer-cart-add button-l button" onClick={addToCart}>В корзину за {price}Р</button>
+                    <button className={`product__footer-cart-add button-l button ${isQuerry && "button-inactive"}`} onClick={addToCart}>В корзину за {price}Р</button>
                 </div>
             </footer>
         </>

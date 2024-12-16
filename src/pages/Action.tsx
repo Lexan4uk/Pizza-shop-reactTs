@@ -32,7 +32,7 @@ function Action() {
                 <section className="action__holder block-normalizer f-column">
                     <h1 className="action__title title-m">{normalizedPromos.title}</h1>
                     <div className="action__image-holder">
-                        <img className="action__image" src={`https://nf.kvokka.net${normalizedPromos.cover}`} alt="Action image" />
+                        <img className="action__image" src={`https://nf.kvokka.net${normalizedPromos.cover}`} alt="Action" />
                     </div>
                     <span className="action__text text-l">{normalizedPromos.description}</span>
                 </section>

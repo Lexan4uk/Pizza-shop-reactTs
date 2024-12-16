@@ -19,7 +19,7 @@ function SelectCity() {
 
     const [searchItem, setSearchItem] = useState('')
     const [cities, setCities] = useState<ICityNormalized[]>()
-    const [filteredCities, setFilteredCities] = useState<ICityNormalized[]>([new CCityNormalized])
+    const [filteredCities, setFilteredCities] = useState<ICityNormalized[]>([new CCityNormalized()])
 
     const [selectedCity, setSelectedCity] = useState<ICityNormalized>()
 

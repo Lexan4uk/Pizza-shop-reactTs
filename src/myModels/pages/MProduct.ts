@@ -148,4 +148,23 @@ export interface IModifier {
     proteins_full_amount: number;
     weight: number;
 }
+export interface IModdedModifier {
+    id: string;
+    addition_id: number;
+    carbohydrates_amount: number;
+    carbohydrates_full_amount: number;
+    description: string;
+    energy_amount: number;
+    energy_full_amount: number;
+    fat_amount: number;
+    fat_full_amount: number;
+    image_links: string[];
+    min_price: number;
+    name: string;
+    parent_group: IParentGroupModifier;
+    tags: string[];
+    proteins_amount: number;
+    proteins_full_amount: number;
+    weight: number;
+}
 

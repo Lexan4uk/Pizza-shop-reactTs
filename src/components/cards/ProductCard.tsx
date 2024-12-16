@@ -2,7 +2,7 @@ import '@styles/cards/MenuCard.scss';
 import getSvg from '@images/svg'
 import { IGood } from '@myModels/pages/MMain';
 
-function ProductCard({data} : { data: IGood }) {
+const ProductCard = ({data} : { data: IGood }) => {
     const {
         productcard_border,
         circle,
