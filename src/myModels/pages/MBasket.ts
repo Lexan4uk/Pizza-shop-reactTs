@@ -99,3 +99,17 @@ export interface IBasketModifiersEdit {
     productModifier: number;
     amount: number;
 }
+export class CBasketEdit implements IBasketEdit {
+    products: string;
+    amount: number;
+    cartModifiers?: IBasketModifiersEdit[];
+
+    constructor(data: Partial<IBasketEdit> = {}) {
+        this.products = data.products ?? "";
+        this.amount = data.amount ?? 0;
+        this.cartModifiers = data.cartModifiers?.map(modifier => ({
+            productModifier: modifier.productModifier ?? 0,
+            amount: modifier.amount ?? 0
+        })) ?? [];
+    }
+}

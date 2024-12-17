@@ -13,12 +13,14 @@ import {
 import { BaseApiResponseType } from '@myModels/api/BaseApiTypes';
 import { basketEdit, basketList } from '@scripts/helpers/basket.api';
 import { IBasketEdit, IBasket, IBasketModifiersEdit } from '@myModels/pages/MBasket';
-import { object } from 'prop-types';
+import ProductMessageCard from '@components/cards/ProductMessageCard';
+import { Transition } from '@headlessui/react';
+
 
 function Product() {
     const { id } = useParams();
     const { data: product, error, isLoading: pIsLoading } = useSWR<BaseApiResponseType & { items: IProduct[] }>(apiTags.productById(id), simpleGet);
-    const [selectedProduct, setSelectedProduct] = useState<INormalizedProduct>(new CNormalizedProduct);
+    const [selectedProduct, setSelectedProduct] = useState<INormalizedProduct>(new CNormalizedProduct());
     const [selectedThickness, setSelectedThickness] = useState<string>('thin');
     const [selectedIdBySize, setSelectedIdBySize] = useState<string>("");
 
@@ -30,6 +32,8 @@ function Product() {
     const [normalizedProducts, setNormalizedProducts] = useState<INormalizedProduct[]>([new CNormalizedProduct()]);
 
     const [isQuerry, setIsQuerry] = useState<boolean>(false)
+    const [messageTrigger, setMessageTrigger] = useState<boolean>(false)
+    const [messageText, setMessageText] = useState<string>("")
 
     useEffect(() => {
         if (product && !pIsLoading) {
@@ -56,17 +60,31 @@ function Product() {
         info
     } = getSvg();
 
-    async function addToCart() {
-        const querryData: IBasketEdit[] = [{
-            products: selectedIdBySize,
-            amount: productCount,
-            cartModifiers: addition.map((item) => ({
-                productModifier: item.addition_id,
-                amount: 1
-            }))
-        }];        
+    const addToCart = async () => {
+        setMessageTrigger(false)
+        let querryData: IBasketEdit[]
+        if (selectedProduct.isPizza === true) {
+            querryData = [{
+                products: selectedIdBySize,
+                amount: productCount,
+                cartModifiers: addition.map((item) => ({
+                    productModifier: item.addition_id,
+                    amount: 1
+                }))
+            }];
+        }
+        else {
+            querryData = [{
+                products: selectedProduct.id,
+                amount: productCount,
+                cartModifiers: addition.map((item) => ({
+                    productModifier: item.addition_id,
+                    amount: 1
+                }))
+            }];
+        }
         setIsQuerry(true)
-        
+
         const getCart = await basketList()
         if (typeof getCart === 'object') {
             const oldData: IBasketEdit[] = getCart.cart_products.map((item) => ({
@@ -77,17 +95,29 @@ function Product() {
                     amount: modifier.amount
                 }))
             }));
-            console.log(querryData)
             const combinedData: IBasketEdit[] = oldData.concat(querryData);
             const responce = await basketEdit(combinedData)
+            if (responce !== undefined && typeof responce === "string")
+                setMessageText(responce)
+            else
+                setMessageText("Товар добавлен")
+            setMessageTrigger(true)
+            console.log(responce)
         }
         else {
             const responce = await basketEdit(querryData)
+            if (responce !== undefined && typeof responce === "string")
+                setMessageText(responce)
+            else
+                setMessageText("Товар добавлен")
+            setMessageTrigger(true)
+            console.log(responce)
         }
         setIsQuerry(false)
     }
     return (
         <>
+            <ProductMessageCard message={messageText} trigger={messageTrigger} setTrigger={setMessageTrigger} />
             <main className="product product_props block-normalizer f-column">
                 <button className="product__exit-btn button-s button-s_slice-left" onClick={() => window.history.back()}>{cross("var(--black)")}</button>
                 <div className="product__img-holder">

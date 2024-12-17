@@ -1,0 +1,33 @@
+.prod-message-card {
+    &_props {
+        padding: 8px;
+        justify-content: center;
+        width: 360px;
+        background: var(--gray-text-inactive);
+        position: fixed;
+        z-index: 4;
+        top: 0;
+        opacity: 1;
+        transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    }
+
+    &_enter-from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    &_to {
+        transform: translateY(0) ;
+        opacity: 1;
+    }
+
+    &_leave-from {
+        transform: translateY(0) ;
+        opacity: 1;
+    }
+
+    &_leave-to {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+}

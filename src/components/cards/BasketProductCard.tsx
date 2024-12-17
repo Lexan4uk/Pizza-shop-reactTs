@@ -1,17 +1,20 @@
 import '@styles/pages/Basket.scss';
 import { IBasketProductCard } from '@myModels/components/cards/MBasketProductCar';
 import getSvg from '@images/svg';
-import { basketList } from '@scripts/helpers/basket.api';
+import { basketList, basketEdit } from '@scripts/helpers/basket.api';
 import { IBasketEdit } from '@myModels/pages/MBasket';
 
-const BasketProductCard = ({ data }: IBasketProductCard) => {
+const BasketProductCard = ({ data, update, loading }: IBasketProductCard) => {
     const {
         cross
     } = getSvg()
-    async function deleteProduct(params: any) {
+
+    const deleteProduct = async () => {
+        loading(true)
         const getCart = await basketList()
         if (typeof getCart === 'object') {
-            const oldData = getCart.cart_products.map((item) => ({
+            const filteredData = getCart.cart_products.filter(item => item.id !== data.id);
+            const newData: IBasketEdit[] = filteredData.map((item) => ({
                 products: item.product.id,
                 amount: item.amount,
                 cartModifiers: item.cart_modifiers.map(modifier => ({
@@ -19,11 +22,9 @@ const BasketProductCard = ({ data }: IBasketProductCard) => {
                     amount: modifier.amount
                 }))
             }));
-            const updatedData = oldData.filter(item => item.products !== data.product.id);
-            console.log(getCart)
-            //console.log(data)
-            //console.log(oldData)
-            //console.log(updatedData)
+            const responce = await basketEdit(newData)
+            update(true)
+            loading(false)
         }
     }
     return (
