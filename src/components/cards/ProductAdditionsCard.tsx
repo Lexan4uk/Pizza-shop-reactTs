@@ -20,6 +20,7 @@ const ProductAdditionsCard = ({ addition, updateAddition }: IProductAdditionsCar
         type = "checkbox"
 
     const handleAdd = () => {
+        console.log(normalizedAddition)
         setBtnActive(false);
         updateAddition((prevAdditions: IModdedModifier[]) => {
             const exists = prevAdditions.some(item => item.id === normalizedAddition.id);

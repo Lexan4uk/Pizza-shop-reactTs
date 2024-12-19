@@ -85,7 +85,7 @@ function Main() {
           {delivery ? (
             <>
               <h2 className="main-catalog__delivery-title title-l">Доставим по адресу</h2>
-              <Link to="profile/addresses" className="main-catalog__delivery-buttons-holder f-row gap-4">
+              <Link to="/profile/addresses" className="main-catalog__delivery-buttons-holder f-row gap-4">
                 <button className='main-catalog__delivery-text hlink-l text-yellow simple-button text-underline'>{delivery}</button>
                 {pen()}
               </Link>

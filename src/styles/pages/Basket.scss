@@ -1,14 +1,29 @@
 .basket {
+    &_props {
+        padding-bottom: 108px;
+    }
+    &__cart-section {
+        border-top: 1px solid var(--dark-gray);
+        padding-bottom: 60px;
+    }
     &__section-title-holder {
         margin: 12px 0px;
         justify-content: space-between;
+        align-items: center;
         width: 100%;
     }
 
     &__prodcard {
+        display: grid;
+        grid-template-columns: 100px auto;
         width: 100%;
-        border-bottom: 1px solid var(--yellow);
-        border-left: 1px solid var(--yellow);
+        gap: 12px;
+        padding: 20px;
+        position: relative;
+    }
+    &__prodcard-no-img {
+        display: flex;
+        width: 100%;
         gap: 12px;
         padding: 20px;
         position: relative;
@@ -25,46 +40,137 @@
     }
 
     &__prodcard-content {
-        gap: 20px;
         flex: 1;
+        word-break: break-word;
+        justify-content: center;
     }
-    &__prodcard-content-text {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+    &__prodcard-content-title {
+        margin-bottom: 8px;
+    }
+
+    &__prodcard-actions {
+        justify-content: space-between;
+    }
+
+
+    &__items-holder {
+        margin-top: 25px;
     }
 
     &__prodcard-delete {
         position: absolute;
         right: 0;
         top: 0;
+        margin-right: 5px;
     }
 
-    .spinner {
-        display: flex;
-        justify-content: center;
+    &__prodcard-actions {
+        margin-top: 20px;
+    }
+
+
+    &__prodcard-counter-holder {
         align-items: center;
-        height: 100px;
+        --iconcolor: var(--black);
+        width: 81px;
     }
 
-    .loader {
-        border: 8px solid var(--dark-gray);
-        border-top: 8px solid var(--yellow);
+    &__prodcard-cart-add {
+        padding-left: 19px;
+        padding-right: 19px;
+    }
+
+    &__prodcard-counter-btn {
+        padding: 0px;
+    }
+
+    &__prodcard-counter {
+        appearance: none;
+        background: none;
+        border: 1px solid var(--gray-text-inactive);
+        height: fit-content !important;
+        width: 100%;
+        flex: 1;
+        padding: 3px;
+        font-weight: 700 !important;
+        text-align: center;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &__bottom-border {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--yellow);
+    }
+
+    &__left-border {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 2px;
+        height: 100%;
+        background-color: var(--yellow);
+    }
+
+    &__bottom-left-border {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 20px;
+        height: 20px;
+        background: linear-gradient(to top right, var(--black) 46%, var(--yellow) 46%, var(--yellow) 54%, transparent 54%);
+        pointer-events: none;
+    }
+
+    &__bottom-right-border {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 2px;
+        height: 30%;
+        background-color: var(--yellow);
+    }
+
+    &__left-top-border {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 30%;
+        height: 2px;
+        background-color: var(--yellow);
+    }
+
+    &__top-circle {
+        position: absolute;
+        top: -4px;
+        left: 30%;
+        width: 10px;
+        height: 10px;
+        border: 2px solid var(--yellow);
         border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        animation: spin 1s linear infinite;
+        background-color: var(--black);
     }
 
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
+    &__right-circle {
+        position: absolute;
+        bottom: 30%;
+        right: -4px;
+        width: 10px;
+        height: 10px;
+        border: 2px solid var(--yellow);
+        border-radius: 50%;
+        background-color: var(--black);
     }
-
+    &__cart-section-padding  {
+        padding-top: 32px;
+    }
+    &__section-address-holder {
+        padding-left: 10px;
+    }
 }

@@ -102,7 +102,6 @@ function Product() {
             else
                 setMessageText("Товар добавлен")
             setMessageTrigger(true)
-            console.log(responce)
         }
         else {
             const responce = await basketEdit(querryData)
