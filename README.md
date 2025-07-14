@@ -21,7 +21,7 @@
 - Изменение информации об аккаунте (валидация данных на уровне клиента).
 
 **Привязанное к аккаунту:**
-- Работа с точками самовывоза и доставки (использовался [kladrApi](https://kladr-api.ru), на момент написания сервис недоступен);
+- Работа с точками самовывоза и доставки (использовался [kladrApi](https://kladr-api.ru), с 2025 сервис недоступен);
 - Корзина сохраняется и изменяется через базу данных, а не на стороне клиента;
 - Создание заказа на API реализовано не было, так что пользователь в корзине видит только добавленные товары и выбранную точку самовывоза/доставки;
 
@@ -48,7 +48,7 @@
 
 ## Скриншоты
 
-<img src="https://github.com/Lexan4uk/imgs/blob/main/pizzeria/11.png?raw=true" width="500" />
-<img src="https://github.com/Lexan4uk/imgs/blob/main/pizzeria/12.png?raw=true" width="500" />
-<img src="https://github.com/Lexan4uk/imgs/blob/main/pizzeria/13.png?raw=true" width="500" />
-<img src="https://github.com/Lexan4uk/imgs/blob/main/pizzeria/14.png?raw=true" width="500" />
+<img src="https://github.com/Lexan4uk/imgs/blob/main/pizzeria/11.png?raw=true" width="400" />
+<img src="https://github.com/Lexan4uk/imgs/blob/main/pizzeria/12.png?raw=true" width="400" />
+<img src="https://github.com/Lexan4uk/imgs/blob/main/pizzeria/13.png?raw=true" width="400" />
+<img src="https://github.com/Lexan4uk/imgs/blob/main/pizzeria/14.png?raw=true" width="400" />
