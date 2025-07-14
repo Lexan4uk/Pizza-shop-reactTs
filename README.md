@@ -44,7 +44,7 @@
 
 Короткое видео по основному функционалу:
 
-[![Видео по функционалу](https://img.youtube.com/vi/Axc52TSzDQo/0.jpg)](https://youtu.be/Axc52TSzDQo)]
+[![Видео по функционалу](https://img.youtube.com/vi/Axc52TSzDQo/0.jpg)](https://youtu.be/Axc52TSzDQo)
 
 ## Скриншоты
 
