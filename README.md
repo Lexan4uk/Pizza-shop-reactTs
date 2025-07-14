@@ -48,7 +48,7 @@
 
 ## Скриншоты
 
-<img src="https://github.com/Lexan4uk/imgs/blob/main/pizzeria/11.png?raw=true" width="300" />
-<img src="https://github.com/Lexan4uk/imgs/blob/main/pizzeria/12.png?raw=true" width="300" />
-<img src="https://github.com/Lexan4uk/imgs/blob/main/pizzeria/13.png?raw=true" width="300" />
-<img src="https://github.com/Lexan4uk/imgs/blob/main/pizzeria/14.png?raw=true" width="300" />
+<img src="https://github.com/Lexan4uk/imgs/blob/main/pizzeria/11.png?raw=true" width="500" />
+<img src="https://github.com/Lexan4uk/imgs/blob/main/pizzeria/12.png?raw=true" width="500" />
+<img src="https://github.com/Lexan4uk/imgs/blob/main/pizzeria/13.png?raw=true" width="500" />
+<img src="https://github.com/Lexan4uk/imgs/blob/main/pizzeria/14.png?raw=true" width="500" />
